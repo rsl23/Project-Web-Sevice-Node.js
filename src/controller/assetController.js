@@ -32,9 +32,16 @@ const detailAsset = async (req, res) => {
         "x-cg-pro-api-key": "CG-Difbd7y1YycHVAVvyUDzocDu",
       },
     };
-
     const response = await axios(url, options);
-    return res.status(200).json({ AssetDetail: response.data });
+    const temp = response.data;
+    const asset = {
+      name: temp.name,
+      symbol: temp.symbol,
+      categories: temp.categories,
+      description: temp.description?.en,
+      price: `${temp.market_data?.current_price?.usd} $`,
+    };
+    return res.status(200).json({ AssetDetail: asset });
   } catch (err) {
     console.error("Error response:", err.response?.data || err.message);
     return res.status(500).json({ message: err.message });
