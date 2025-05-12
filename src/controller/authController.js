@@ -57,4 +57,26 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+const profile = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      where: { username: req.user.username },
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User tidak ditemukan" });
+    }
+
+    const profile = {
+      username: user.username,
+      name: user.name,
+      total_porto: user.saldo,
+    };
+
+    return res.status(200).json({ Profile: profile });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
+module.exports = { register, login, profile };
