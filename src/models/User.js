@@ -33,12 +33,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       asset_slot: {
         type: DataTypes.INTEGER,
-        allowNull: false,
         defaultValue: 5,
       },
       subscription: {
         type: DataTypes.STRING,
-        allowNull: false,
         defaultValue: "Free",
       },
       createdAt: {

@@ -5,13 +5,14 @@ const JWT_KEY = "ProyekWS";
 
 const register = async (req, res) => {
   try {
-    const { username, password, name } = req.body;
+    const { username, password, name, email } = req.body;
     const time = new Date();
 
     const query = await User.create({
       username: username,
       password: password,
       name: name,
+      email: email,
       saldo: 0,
       createdAt: time,
       updatedAt: time,
