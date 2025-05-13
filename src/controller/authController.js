@@ -111,4 +111,56 @@ const profile = async (req, res) => {
   }
 };
 
-module.exports = { register, login, profile };
+const requestPasswordReset = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ where: { email: email } });
+
+    if (!user) {
+      return res.status(404).json({
+        message: "Email tidak ditemukan"
+      });
+    }
+
+    const resetToken = jwt.sign({ email: user.email }, process.env.JWT_SECRET, {
+      expiresIn: '1h'
+    });
+
+    return res.status(200).json({
+      message: "Token reset password berhasil dibuat.",
+      resetToken: resetToken
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+const updatePassword = async (req, res) => {
+  try {
+    const { token, newPassword } = req.body;
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const user = await User.findOne({ where: { email: decoded.email } });
+
+    if (!user) {
+      return res.status(404).json({
+        message: "Pengguna tidak ditemukan"
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    user.password = hashedPassword;
+    await user.save();
+
+    return res.status(200).json({
+      message: "Password berhasil diperbarui"
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+module.exports = { register, login, profile, requestPasswordReset, updatePassword };
