@@ -1,14 +1,12 @@
 const { Op, Sequelize } = require("sequelize");
 const { User } = require("../models/fetchModel");
-const {registerSchema, loginSchema} = require("../middleware/userSchema");
+const { registerSchema, loginSchema } = require("../middleware/userSchema");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const JWT_KEY = "ProyekWS";
 
 const register = async (req, res) => {
   try {
-
-
     const { error, value } = registerSchema.validate(req.body);
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
@@ -18,16 +16,16 @@ const register = async (req, res) => {
 
     const existingUser = await User.findOne({
       where: {
-        [Op.or]: [{ username }, { email }]
-      }
+        [Op.or]: [{ username }, { email }],
+      },
     });
 
     if (existingUser) {
       return res.status(409).json({
         message:
           existingUser.username === username
-            ? 'Username sudah terdaftar'
-            : 'Email sudah terdaftar',
+            ? "Username sudah terdaftar"
+            : "Email sudah terdaftar",
       });
     }
 
@@ -35,8 +33,6 @@ const register = async (req, res) => {
     const time = new Date();
 
     const hashedPassword = await bcrypt.hash(password, 10);
-
-
 
     const query = await User.create({
       username: username,
@@ -57,7 +53,6 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-
     const { error, value } = loginSchema.validate(req.body);
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
