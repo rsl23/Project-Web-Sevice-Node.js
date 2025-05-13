@@ -1,5 +1,6 @@
 const { Op, Sequelize } = require("sequelize");
 const axios = require("axios");
+require("dotenv").config();
 
 const fetchCoin = async (req, res) => {
   try {
@@ -29,7 +30,7 @@ const detailAsset = async (req, res) => {
       method: "GET",
       headers: {
         accept: "application/json",
-        "x-cg-pro-api-key": "CG-Difbd7y1YycHVAVvyUDzocDu",
+        "x-cg-pro-api-key": `${process.env.API_KEY}`,
       },
     };
     const response = await axios(url, options);
