@@ -16,6 +16,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       name: {
         type: DataTypes.STRING,
         set(value) {
@@ -26,6 +30,16 @@ module.exports = (sequelize, DataTypes) => {
       saldo: {
         type: DataTypes.DECIMAL,
         allowNull: false,
+      },
+      asset_slot: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 5,
+      },
+      subscription: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: "Free",
       },
       createdAt: {
         type: DataTypes.TIME,
