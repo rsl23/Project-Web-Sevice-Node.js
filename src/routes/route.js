@@ -10,8 +10,8 @@ router.post("/auth/login", login);
 router.get("/auth/me", verifyToken, profile);
 
 // -----------------------------------------------------------------------
-router.get("/auth/request_verification", requestPasswordReset);
-router.get("/auth/reset_password", updatePassword);
+router.post("/auth/request_verification", requestPasswordReset);
+router.post("/auth/reset_password", updatePassword);
 // -----------------------------------------------------------------------
 
 router.get("/assets", fetchCoin);
