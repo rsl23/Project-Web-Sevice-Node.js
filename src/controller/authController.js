@@ -1,6 +1,7 @@
 const { Op, Sequelize } = require("sequelize");
 const { User } = require("../models/fetchModel");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 const JWT_KEY = "ProyekWS";
 
 const register = async (req, res) => {
@@ -8,9 +9,12 @@ const register = async (req, res) => {
     const { username, password, name, email } = req.body;
     const time = new Date();
 
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const query = await User.create({
       username: username,
-      password: password,
+      password: hashedPassword,
       name: name,
       email: email,
       saldo: 0,
@@ -19,7 +23,7 @@ const register = async (req, res) => {
     });
     return res
       .status(200)
-      .json({ message: `Berhasil Register dengan Usernmae ${username}` });
+      .json({ message: `Berhasil Register dengan Username ${username}` });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -33,7 +37,8 @@ const login = async (req, res) => {
       where: { username: username },
     });
     if (findUser) {
-      if (findUser.password !== password) {
+      const isPasswordMatch = await bcrypt.compare(password, findUser.password);
+      if (!isPasswordMatch) {
         return res.status(400).json({ message: "Password Salah" });
       } else {
         const token = jwt.sign(
