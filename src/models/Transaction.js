@@ -4,6 +4,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Transaction.belongsTo(models.User, {
         foreignKey: "id_user",
+        as: "user",
+        onDelete: "CASCADE",
       });
     }
   }
@@ -50,10 +52,6 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Transaction",
       tableName: "transaksi",
       timestamps: true,
-      name: {
-        singular: "Transaction",
-        plural: "Transaction",
-      },
     }
   );
   return Transaction;
