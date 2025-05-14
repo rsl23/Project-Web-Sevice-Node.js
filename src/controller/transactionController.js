@@ -129,7 +129,7 @@ const getAllTransactions = async (req, res) => {
       where: {
         id_user: acc.id_user,
       },
-      // order: [['createdAt', 'DESC']],
+      order: [['createdAt', 'DESC']],
     });
 
     return res.status(200).json({ transaksi });
@@ -155,7 +155,7 @@ const getTransactionById = async (req, res) => {
 
     const transaksi = await Transaction.findOne({
       where: {
-        id: id_transaksi,
+        id_transaksi: id_transaksi,
         id_user: acc.id_user,
       },
     });
