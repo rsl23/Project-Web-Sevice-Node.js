@@ -24,8 +24,9 @@ const fetchPorto = async (req, res) => {
         try {
           const response = await axios(url, options);
           const price = response.data.market_data?.current_price?.usd;
-          const sumPrice = price * item.jumlah;
-          const Pnl = sumPrice - item.avg_price;
+          const Pnl = parseFloat(
+            ((price - item.avg_price) * item.jumlah).toFixed(2)
+          );
           sumpnl = sumpnl + Pnl;
           return {
             Asset: item.id_asset,

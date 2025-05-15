@@ -59,7 +59,7 @@ const BuyTransaction = async (req, res) => {
 
       existing.jumlah = totalJumlahBaru;
       existing.avg_price = avgBaru;
-      // await existing.save();
+      await existing.save();
       console.log(totalJumlahBaru);
       console.log(avgBaru);
     } else {
