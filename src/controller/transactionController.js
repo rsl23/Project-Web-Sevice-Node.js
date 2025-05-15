@@ -141,7 +141,7 @@ const getAllTransactions = async (req, res) => {
 
 const getTransactionById = async (req, res) => {
   const user = req.user;
-  const { id_transaksi } = req.params.id;
+  const { id_transaksi } = req.params;
 
   try {
     const acc = await User.findOne({
