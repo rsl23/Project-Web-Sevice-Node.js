@@ -31,6 +31,10 @@ const BuyTransaction = async (req, res) => {
       });
     }
 
+     acc.saldo -= sumPrice;
+    await acc.save();
+
+
     const transaksi = await Transaction.create({
       id_user: acc.id_user,
       id_asset: response.data.id,
@@ -38,6 +42,35 @@ const BuyTransaction = async (req, res) => {
       harga: sumPrice,
       status: "Buy",
     });
+
+    const existing = await Portofolio.findOne({
+      where: {
+        id_user: acc.id_user,
+        id_asset: id,
+      },
+    });
+
+    if (existing) {
+      const totalJumlahLama = existing.jumlah;
+      const avgLama = existing.avg_price;
+      const totalHargaLama = totalJumlahLama * avgLama;
+
+      const totalJumlahBaru = totalJumlahLama + quantity;
+      const totalHargaBaru = totalHargaLama + sumPrice;
+
+      const avgBaru = totalHargaBaru / totalJumlahBaru;
+
+      existing.jumlah = totalJumlahBaru;
+      existing.avg_price = avgBaru;
+      await existing.save();
+    } else {
+      await Portofolio.create({
+        id_user: acc.id_user,
+        id_asset: id,
+        jumlah: quantity,
+        avg_price: price,
+      });
+    }
 
     return res.status(200).json({ transaksi });
   } catch (err) {
@@ -67,23 +100,14 @@ const SellTransaction = async (req, res) => {
       where: { username: user.username },
     });
 
-    const totalBuy = await Transaction.sum("jumlah", {
+    const portofolio = await Portofolio.findOne({
       where: {
         id_user: acc.id_user,
         id_asset: id,
-        status: "Buy",
       },
     });
 
-    const totalSell = await Transaction.sum("jumlah", {
-      where: {
-        id_user: acc.id_user,
-        id_asset: id,
-        status: "Sell",
-      },
-    });
-
-    const ownedAsset = (totalBuy || 0) - (totalSell || 0);
+    const ownedAsset = portofolio ? portofolio.jumlah : 0;
 
     if (ownedAsset < quantity) {
       return res.status(400).json({
@@ -91,7 +115,7 @@ const SellTransaction = async (req, res) => {
       });
     }
 
-    acc.saldo += totalValue;
+    acc.saldo = parseFloat(acc.saldo) + totalValue;
     await acc.save();
 
     const transaksi = await Transaction.create({
@@ -102,6 +126,19 @@ const SellTransaction = async (req, res) => {
       status: "Sell",
     });
 
+    const sisaJumlah = ownedAsset - quantity;
+    if (sisaJumlah === 0) {
+      await Portofolio.destroy({
+        where: {
+          id_user: acc.id_user,
+          id_asset: id,
+        },
+      });
+    } else {
+      portofolio.jumlah = sisaJumlah;
+      await portofolio.save();
+    }
+
     return res.status(200).json({
       message: `Berhasil menjual ${quantity} unit ${id}`,
       transaksi,
@@ -111,6 +148,7 @@ const SellTransaction = async (req, res) => {
     return res.status(500).json({ message: err.message });
   }
 };
+
 
 const getAllTransactions = async (req, res) => {
   const user = req.user;
