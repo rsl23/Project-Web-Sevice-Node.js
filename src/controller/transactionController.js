@@ -31,9 +31,8 @@ const BuyTransaction = async (req, res) => {
       });
     }
 
-     acc.saldo -= sumPrice;
+    acc.saldo -= sumPrice;
     await acc.save();
-
 
     const transaksi = await Transaction.create({
       id_user: acc.id_user,
@@ -54,15 +53,15 @@ const BuyTransaction = async (req, res) => {
       const totalJumlahLama = existing.jumlah;
       const avgLama = existing.avg_price;
       const totalHargaLama = totalJumlahLama * avgLama;
-
-      const totalJumlahBaru = totalJumlahLama + quantity;
+      const totalJumlahBaru = totalJumlahLama + Number(quantity);
       const totalHargaBaru = totalHargaLama + sumPrice;
-
       const avgBaru = totalHargaBaru / totalJumlahBaru;
 
       existing.jumlah = totalJumlahBaru;
       existing.avg_price = avgBaru;
-      await existing.save();
+      // await existing.save();
+      console.log(totalJumlahBaru);
+      console.log(avgBaru);
     } else {
       await Portofolio.create({
         id_user: acc.id_user,
@@ -149,7 +148,6 @@ const SellTransaction = async (req, res) => {
   }
 };
 
-
 const getAllTransactions = async (req, res) => {
   const user = req.user;
 
@@ -228,12 +226,14 @@ const topup = async (req, res) => {
 
     const update = await User.update(
       {
-        saldo: acc.saldo + parseFloat(topup),
+        saldo: parseFloat(acc.saldo) + parseFloat(topup),
       },
       {
         where: { username: user.username },
       }
     );
+
+    console.log(parseFloat(topup));
 
     return res.status(200).json({ message: "Berhasil topup" });
   } catch (err) {
