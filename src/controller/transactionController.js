@@ -1,8 +1,7 @@
 const { Op, Sequelize } = require("sequelize");
 const axios = require("axios");
 require("dotenv").config();
-const { User, Transaction } = require("../models/fetchModel");
-const { username } = require("../config/db");
+const { User, Transaction, Portofolio } = require("../models/fetchModel");
 
 const BuyTransaction = async (req, res) => {
   const user = req.user;

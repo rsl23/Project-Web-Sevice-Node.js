@@ -15,6 +15,8 @@ const {
   getTransactionById,
   topup,
 } = require("../controller/transactionController");
+
+const { fetchPorto } = require("../controller/portofolioController");
 const router = express.Router();
 
 //==================================== LOGIN & REGISTER ==================================================
@@ -36,5 +38,8 @@ router.post("/transaction/sell", verifyToken, SellTransaction);
 router.get("/transaction", verifyToken, getAllTransactions);
 router.get("/transaction/:id", verifyToken, getTransactionById);
 router.post("/topup", verifyToken, topup);
+
+//============================================ PORTO ===================================
+router.get("/portofolio/getAll", verifyToken, fetchPorto);
 
 module.exports = router;
