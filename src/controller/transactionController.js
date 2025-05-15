@@ -31,6 +31,10 @@ const BuyTransaction = async (req, res) => {
       });
     }
 
+     acc.saldo -= sumPrice;
+    await acc.save();
+
+
     const transaksi = await Transaction.create({
       id_user: acc.id_user,
       id_asset: response.data.id,
@@ -38,6 +42,36 @@ const BuyTransaction = async (req, res) => {
       harga: sumPrice,
       status: "Buy",
     });
+
+    const existing = await Portofolio.findOne({
+      where: {
+        id_user: acc.id_user,
+        id_asset: id,
+      },
+    });
+
+    if (existing) {
+      const totalJumlahLama = existing.jumlah;
+      const avgLama = existing.avg_price;
+      const totalHargaLama = totalJumlahLama * avgLama;
+
+      const totalJumlahBaru = totalJumlahLama + quantity;
+      const totalHargaBaru = totalHargaLama + sumPrice;
+
+      const avgBaru = totalHargaBaru / totalJumlahBaru;
+
+      existing.jumlah = totalJumlahBaru;
+      existing.avg_price = avgBaru;
+      await existing.save();
+    } else {
+      // Insert baru ke portofolio
+      await Portofolio.create({
+        id_user: acc.id_user,
+        id_asset: id,
+        jumlah: quantity,
+        avg_price: price,
+      });
+    }
 
     return res.status(200).json({ transaksi });
   } catch (err) {
