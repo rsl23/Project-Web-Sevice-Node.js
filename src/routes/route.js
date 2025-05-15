@@ -8,7 +8,13 @@ const {
 } = require("../controller/authController");
 const { verifyToken } = require("../middleware/authMiddleware");
 const { fetchCoin, detailAsset } = require("../controller/assetController");
-const { BuyTransaction,SellTransaction, getAllTransactions, getTransactionById } = require("../controller/transactionController");
+const {
+  BuyTransaction,
+  SellTransaction,
+  getAllTransactions,
+  getTransactionById,
+  topup,
+} = require("../controller/transactionController");
 const router = express.Router();
 
 //==================================== LOGIN & REGISTER ==================================================
@@ -29,5 +35,6 @@ router.post("/transaction/buy", verifyToken, BuyTransaction);
 router.post("/transaction/sell", verifyToken, SellTransaction);
 router.get("/transaction", verifyToken, getAllTransactions);
 router.get("/transaction/:id", verifyToken, getTransactionById);
+router.post("/topup", verifyToken, topup);
 
 module.exports = router;

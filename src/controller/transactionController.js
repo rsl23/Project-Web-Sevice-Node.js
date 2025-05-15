@@ -2,6 +2,7 @@ const { Op, Sequelize } = require("sequelize");
 const axios = require("axios");
 require("dotenv").config();
 const { User, Transaction } = require("../models/fetchModel");
+const { username } = require("../config/db");
 
 const BuyTransaction = async (req, res) => {
   const user = req.user;
@@ -23,14 +24,14 @@ const BuyTransaction = async (req, res) => {
     const acc = await User.findOne({
       where: { username: user.username },
     });
+    console.log(acc.saldo);
 
-    console.log(acc);
-
-    if (user.saldo < sumPrice) {
+    if (acc.saldo < sumPrice) {
       return res.status(400).json({
         message: "Saldo anda tidak mencukupi, silahkan topup terlebih dahulu",
       });
     }
+
     const transaksi = await Transaction.create({
       id_user: acc.id_user,
       id_asset: response.data.id,
@@ -45,10 +46,9 @@ const BuyTransaction = async (req, res) => {
   }
 };
 
-
 const SellTransaction = async (req, res) => {
   const user = req.user;
-  const { id } = req.query; 
+  const { id } = req.query;
   const { quantity } = req.body;
 
   try {
@@ -68,20 +68,20 @@ const SellTransaction = async (req, res) => {
       where: { username: user.username },
     });
 
-    const totalBuy = await Transaction.sum('jumlah', {
+    const totalBuy = await Transaction.sum("jumlah", {
       where: {
         id_user: acc.id_user,
         id_asset: id,
-        status: 'Buy'
-      }
+        status: "Buy",
+      },
     });
 
-    const totalSell = await Transaction.sum('jumlah', {
+    const totalSell = await Transaction.sum("jumlah", {
       where: {
         id_user: acc.id_user,
         id_asset: id,
-        status: 'Sell'
-      }
+        status: "Sell",
+      },
     });
 
     const ownedAsset = (totalBuy || 0) - (totalSell || 0);
@@ -129,7 +129,7 @@ const getAllTransactions = async (req, res) => {
       where: {
         id_user: acc.id_user,
       },
-      order: [['createdAt', 'DESC']],
+      order: [["createdAt", "DESC"]],
     });
 
     return res.status(200).json({ transaksi });
@@ -138,7 +138,6 @@ const getAllTransactions = async (req, res) => {
     return res.status(500).json({ message: err.message });
   }
 };
-
 
 const getTransactionById = async (req, res) => {
   const user = req.user;
@@ -161,7 +160,9 @@ const getTransactionById = async (req, res) => {
     });
 
     if (!transaksi) {
-      return res.status(404).json({ message: "Transaksi tidak ditemukan atau bukan milik Anda" });
+      return res
+        .status(404)
+        .json({ message: "Transaksi tidak ditemukan atau bukan milik Anda" });
     }
 
     return res.status(200).json({ transaksi });
@@ -171,7 +172,42 @@ const getTransactionById = async (req, res) => {
   }
 };
 
+const topup = async (req, res) => {
+  const user = req.user;
+  const { topup } = req.body;
+  try {
+    const acc = await User.findOne({
+      where: { username: user.username },
+    });
 
+    if (!acc) {
+      return res.status(404).json({ message: "User tidak ditemukan" });
+    }
+    if (!topup) {
+      return res
+        .status(400)
+        .json({ message: "Tolong masukan jumlah saldo yang valid" });
+    }
 
+    const update = await User.update(
+      {
+        saldo: acc.saldo + parseFloat(topup),
+      },
+      {
+        where: { username: user.username },
+      }
+    );
 
-module.exports = { BuyTransaction, SellTransaction, getAllTransactions, getTransactionById };
+    return res.status(200).json({ message: "Berhasil topup" });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
+module.exports = {
+  BuyTransaction,
+  SellTransaction,
+  getAllTransactions,
+  getTransactionById,
+  topup,
+};
