@@ -52,22 +52,37 @@ const fetchPorto = async (req, res) => {
   }
 };
 
-// const addPortofolio = async (req, res) => {
-//   try {
-//     const { username } = req.user;
-//     const { currency, balance } = req.body;
-//     const time = new Date();
+const detailPorto = async (req, res) => {
+  try {
+    const { id } = req.query;
+    const url = `https://api.coingecko.com/api/v3/coins/${id}`;
+    const options = {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        "x-cg-pro-api-key": `${process.env.API_KEY}`,
+      },
+    };
+    const asset = await Portofolio.findOne({
+      where: { id_asset: id },
+    });
+    const response = await axios(url, options);
+    const price = response.data.market_data?.current_price?.usd;
+    const Pnl = parseFloat(
+      ((price - asset.avg_price) * asset.jumlah).toFixed(2)
+    );
+    const temp = {
+      Asset: asset.id_asset,
+      Price: price,
+      Jumlah: asset.jumlah,
+      AvgPrice: asset.avg_price,
+      Pnl: Pnl,
+    };
 
-//     const query = await Wallets.create({
-//       user_id: username,
-//       currency: currency,
-//       balance: balance,
-//       createdAt: time,
-//     });
-//     return res.status(200).json({ message: Berhasil menambahkan Wallet });
-//   } catch (err) {
-//     return res.status(500).json({ message: err.message });
-//   }
-// };
+    return res.status(200).json({ Asset: temp });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
 
-module.exports = { fetchPorto };
+module.exports = { fetchPorto, detailPorto };
