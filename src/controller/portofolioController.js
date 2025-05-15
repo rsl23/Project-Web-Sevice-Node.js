@@ -9,6 +9,7 @@ const fetchPorto = async (req, res) => {
     const { username } = req.user;
     const acc = await User.findOne({ where: { username: username } });
     const porto = await Portofolio.findAll({ where: { id_user: acc.id_user } });
+    let sumpnl = 0;
 
     const tempporto = await Promise.all(
       porto.map(async (item) => {
@@ -24,12 +25,14 @@ const fetchPorto = async (req, res) => {
           const response = await axios(url, options);
           const price = response.data.market_data?.current_price?.usd;
           const sumPrice = price * item.jumlah;
+          const Pnl = sumPrice - item.avg_price;
+          sumpnl = sumpnl + Pnl;
           return {
             Asset: item.id_asset,
             Price: price,
             Jumlah: item.jumlah,
             AvgPrice: item.avg_price,
-            Pnl: sumPrice - item.avg_price,
+            Pnl: Pnl,
           };
         } catch (err) {
           return {
@@ -42,7 +45,7 @@ const fetchPorto = async (req, res) => {
         }
       })
     );
-    return res.status(200).json({ porto: tempporto });
+    return res.status(200).json({ porto: tempporto, Today_PnL: sumpnl });
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }
