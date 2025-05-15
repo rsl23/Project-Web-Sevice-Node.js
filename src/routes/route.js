@@ -36,7 +36,7 @@ router.get("/assets/:id", detailAsset);
 router.post("/transaction/buy", verifyToken, BuyTransaction);
 router.post("/transaction/sell", verifyToken, SellTransaction);
 router.get("/transaction", verifyToken, getAllTransactions);
-router.get("/transaction/:id", verifyToken, getTransactionById);
+router.get("/transaction/:id_transaksi", verifyToken, getTransactionById);
 router.post("/topup", verifyToken, topup);
 
 //============================================ PORTO ===================================
