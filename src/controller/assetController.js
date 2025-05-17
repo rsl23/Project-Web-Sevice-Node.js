@@ -1,52 +1,126 @@
-const { Op, Sequelize } = require("sequelize");
+const { Sequelize } = require("sequelize");
 const axios = require("axios");
 require("dotenv").config();
+const db = require("../models/fetchModel");
+const { asset } = db;
 
-const fetchCoin = async (req, res) => {
-  try {
-    const url = "https://api.coingecko.com/api/v3/coins/list";
-    const options = {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        "x-cg-pro-api-key": "CG-Difbd7y1YycHVAVvyUDzocDu",
-      },
+const fetchCoinGeckoPrices = async () => {
+    const params = {
+        vs_currency: "usd",
+        order: "market_cap_desc",
+        per_page: 250,
+        page: 1,
+        sparkline: false
     };
 
-    const response = await axios(url, options);
-    console.log(response.data);
-    return res.status(200).json({ Assets: response.data });
-  } catch (err) {
-    console.error("Error response:", err.response?.data || err.message);
-    return res.status(500).json({ message: err.message });
-  }
+    const response = await axios.get("https://api.coingecko.com/api/v3/coins/markets", { params });
+    return response.data;
 };
 
-const detailAsset = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const url = `https://api.coingecko.com/api/v3/coins/${id}`;
-    const options = {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        "x-cg-pro-api-key": `${process.env.API_KEY}`,
-      },
-    };
-    const response = await axios(url, options);
-    const temp = response.data;
-    const asset = {
-      name: temp.name,
-      symbol: temp.symbol,
-      categories: temp.categories,
-      description: temp.description?.en,
-      price: `${temp.market_data?.current_price?.usd} $`,
-    };
-    return res.status(200).json({ AssetDetail: asset });
-  } catch (err) {
-    console.error("Error response:", err.response?.data || err.message);
-    return res.status(500).json({ message: err.message });
-  }
+const newAssets = async (req, res) => {
+    try {
+        const { id_asset, name, price, description, symbol } = req.body;
+
+        if (!id_asset || !name) {
+            return res.status(400).json({ message: "id_asset and name are required." });
+        }
+
+        const existing = await asset.findByPk(id_asset);
+        if (existing) {
+            return res.status(409).json({ message: "Asset with this ID already exists." });
+        }
+
+        const newAsset = await asset.create({
+            id_asset,
+            name,
+            price,
+            description,
+            symbol
+        });
+
+        return res.status(201).json({ message: "Asset created", data: newAsset });
+    } catch (err) {
+        console.error("Error creating asset:", err);
+        return res.status(500).json({ message: "Internal server error." });
+    }
 };
 
-module.exports = { fetchCoin, detailAsset };
+const updateAssets = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const updateData = req.body;
+
+        const targetAsset = await asset.findByPk(id);
+        if (!targetAsset) {
+            return res.status(404).json({ message: "Asset not found." });
+        }
+
+        await targetAsset.update(updateData);
+
+        return res.status(200).json({ message: "Asset updated successfully.", data: targetAsset });
+    } catch (err) {
+        console.error("Update asset error:", err);
+        return res.status(500).json({ message: "Internal server error." });
+    }
+};
+
+const deleteAssets = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const targetAsset = await asset.findByPk(id);
+
+        if (!targetAsset) {
+            return res.status(404).json({ message: "Asset not found." });
+        }
+
+        if (targetAsset.is_deleted) {
+            return res.status(400).json({ message: "Asset is already deleted." });
+        }
+
+        await targetAsset.update({ is_deleted: true });
+
+        return res.status(200).json({ message: "Asset soft-deleted successfully." });
+    } catch (err) {
+        console.error("Delete asset error:", err);
+        return res.status(500).json({ message: "Internal server error." });
+    }
+};
+
+const getAssets = async (req, res) => {
+    try {
+        const coinGeckoData = await fetchCoinGeckoPrices();
+
+        const dbAssets = await asset.findAll({
+            where: { is_deleted: false },
+            attributes: ['id_asset', 'name', 'price', 'description', 'symbol'],
+            raw: true
+        });
+
+        const dbAssetsMap = new Map(dbAssets.map(a => [a.id_asset, a]));
+
+        const coinGeckoMap = new Map(coinGeckoData.map(c => [c.id, c]));
+
+        const mergedAssets = [...dbAssets];
+
+        for (const coin of coinGeckoMap.values()) {
+            if (!dbAssetsMap.has(coin.id)) {
+                mergedAssets.push({
+                    id_asset: coin.id,
+                    name: coin.name,
+                    price: coin.current_price,
+                    description: null,
+                    symbol: coin.symbol
+                });
+            }
+        }
+
+        return res.json(mergedAssets);
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Failed to fetch assets" });
+    }
+};
+
+module.exports = { getAssets, deleteAssets, updateAssets, newAssets };

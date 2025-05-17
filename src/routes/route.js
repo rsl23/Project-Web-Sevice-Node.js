@@ -7,7 +7,7 @@ const {
   updatePassword,
 } = require("../controller/authController");
 const { verifyToken } = require("../middleware/authMiddleware");
-const { fetchCoin, detailAsset } = require("../controller/assetController");
+const { fetchCoin, detailAsset } = require("../controller/marketController");
 const {
   BuyTransaction,
   SellTransaction,
@@ -20,7 +20,18 @@ const {
   fetchPorto,
   detailPorto,
 } = require("../controller/portofolioController");
+
+const {
+  price,
+  coinPrice,
+  marketTrending
+} = require("../controller/priceController");
+
+const { getAssets, deleteAssets, updateAssets, newAssets } = require("../controller/assetController")
+
 const router = express.Router();
+
+
 
 //==================================== LOGIN & REGISTER ==================================================
 router.post("/auth/register", register);
@@ -30,9 +41,9 @@ router.get("/auth/me", verifyToken, profile);
 router.post("/auth/request_verification", requestPasswordReset);
 router.post("/auth/reset_password", updatePassword);
 
-//===================================== ASSET ==============================================================
-router.get("/assets", fetchCoin);
-router.get("/assets/:id", detailAsset);
+//===================================== MARKET ==============================================================
+router.get("/market", fetchCoin); //list coin
+router.get("/market/:id", detailAsset);//detail coin
 
 //=========================================== TRANSACTION =====================================================
 
@@ -45,5 +56,15 @@ router.post("/topup", verifyToken, topup);
 //============================================ PORTO ===================================
 router.get("/portofolio/getAll", verifyToken, fetchPorto);
 router.get("/portofolio/getDetailPorto", verifyToken, detailPorto);
+//============================================Market Price===================================
+router.get("/prices", price);//dapetin coin + price + marketcap dll
+router.get("/price/:coin", coinPrice);//harga coin tertentu
+router.get("market/trending", marketTrending);//dapetin market trending
+
+//======================================== ASSET ============================================
+router.get("/assets", getAssets); //menampilkan semua asset yang ada di database + axios
+router.post("/assets", newAssets); //nambah asset ke database bisa dari axios atau buat sendiri
+router.put("/assets/:id", updateAssets); //update asset yang ada di database
+router.delete("/assets/:id", deleteAssets); //delete suatu asset
 
 module.exports = router;
