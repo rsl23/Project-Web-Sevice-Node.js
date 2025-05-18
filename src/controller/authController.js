@@ -4,6 +4,7 @@ const { registerSchema, loginSchema } = require("../middleware/userSchema");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const JWT_KEY = "ProyekWS";
+const Joi = require('joi');
 
 const register = async (req, res) => {
   try {
@@ -124,7 +125,7 @@ const requestPasswordReset = async (req, res) => {
       });
     }
 
-    const resetToken = jwt.sign({ email: user.email }, process.env.JWT_SECRET, {
+    const resetToken = jwt.sign({ email: user.email }, JWT_KEY, {
       expiresIn: '1h'
     });
 
@@ -139,9 +140,31 @@ const requestPasswordReset = async (req, res) => {
 
 const updatePassword = async (req, res) => {
   try {
+    const schema = Joi.object({
+      token: Joi.string().required(),
+      newPassword: Joi.string()
+        .min(8)
+        .max(30)
+        .required()
+        .pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^a-zA-Z0-9]).{8,}$'))
+        .messages({
+          "any.required": "Password tidak boleh kosong",
+          "string.empty": "Password tidak boleh kosong",
+          "string.min": "Password minimal 8 karakter",
+          "string.max": "Password maksimal 30 karakter",
+          "string.pattern.base": "Password harus mengandung huruf besar, huruf kecil, angka, dan karakter khusus",
+        }),
+    });
+
+    // Validasi input request body
+    const { error } = schema.validate(req.body);
+    if (error) {
+      return res.status(400).json({ message: error.details[0].message });
+    }
+
     const { token, newPassword } = req.body;
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_KEY);
 
     const user = await User.findOne({ where: { email: decoded.email } });
 
