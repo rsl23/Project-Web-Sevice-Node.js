@@ -6,7 +6,7 @@ const {
   requestPasswordReset,
   updatePassword,
 } = require("../controller/authController");
-const { verifyToken } = require("../middleware/authMiddleware");
+const { verifyToken, verifyAdmin } = require("../middleware/authMiddleware");
 const { fetchCoin, detailAsset } = require("../controller/marketController");
 const {
   // BuyTransaction,
@@ -36,6 +36,8 @@ const {
 } = require("../controller/watchlistController");
 
 const { getAssets, deleteAssets, updateAssets, newAssets, syncAssets } = require("../controller/assetController")
+
+const { registerAdmin, loginAdmin } = require("../controller/adminController");
 
 const router = express.Router();
 
@@ -70,11 +72,11 @@ router.get("/price/:coin", coinPrice);//harga coin tertentu
 router.get("market/trending", marketTrending);//dapetin market trending
 
 //======================================== ASSET ============================================
-router.get("/assets", getAssets); //menampilkan semua asset yang ada di database + axios
-router.post("/assets", newAssets); //nambah asset ke database bisa dari axios atau buat sendiri
-router.put("/assets/:id", updateAssets); //update asset yang ada di database
-router.delete("/assets/:id", deleteAssets); //delete suatu asset
-router.get("/assets/fetchAsset", syncAssets)
+router.get("/assets", verifyAdmin, getAssets); //menampilkan semua asset yang ada di database + axios
+router.post("/assets", verifyAdmin, newAssets); //nambah asset ke database bisa dari axios atau buat sendiri
+router.put("/assets/:id", verifyAdmin, updateAssets); //update asset yang ada di database
+router.delete("/assets/:id", verifyAdmin, deleteAssets); //delete suatu asset
+router.get("/assets/fetchAsset", verifyAdmin, syncAssets)
 
 //======================================= MARKET ORDER & MARKET LIMIT ========================
 router.post("/order/buyMarket", verifyToken, buyMarket); //beli dengan harga terbaik di market - sellLimit
@@ -88,4 +90,9 @@ router.delete('/order/cancel-market/:order_id', verifyToken, cancelLimitOrder);
 router.post("/addwatchlist", verifyToken, addToWatchlist);
 router.get("/getwatchlist", verifyToken, getWatchlist);
 router.delete("/removewatchlist", verifyToken, softDeleteWatchlist);
+
+//==========================================ADMIN=============================================
+router.post("/registeradmin", registerAdmin);
+router.post("/loginadmin", loginAdmin);
+
 module.exports = router;
