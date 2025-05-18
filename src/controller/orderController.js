@@ -426,5 +426,41 @@ const getOrderHistory = async (req, res) => {
     }
 };
 
+const cancelLimitOrder = async (req, res) => {
+    try {
+        const { id_user } = req.user;
+        const { order_id } = req.params;
 
-module.exports = { buyMarket, buyLimit, sellMarket, sellLimit, getOrderHistory };
+        // Cari order milik user yang bertipe limit, status masih open/partial
+        const order = await Order.findOne({
+            where: {
+                id: order_id,
+                user_id: id_user,
+                type: "limit",
+                status: { [Op.in]: ['open', 'partial'] }
+            }
+        });
+
+        if (!order) {
+            return res.status(404).json({
+                message: "Order tidak ditemukan, bukan limit order, atau statusnya sudah tidak bisa dibatalkan"
+            });
+        }
+
+        order.status = "cancelled";
+        await order.save();
+
+        return res.status(200).json({
+            message: "Limit order berhasil dibatalkan",
+            cancelled_order_id: order.id
+        });
+
+    } catch (err) {
+        console.error("Error saat cancelLimitOrder:", err);
+        return res.status(500).json({ message: "Terjadi kesalahan server", error: err.message });
+    }
+};
+
+
+
+module.exports = { buyMarket, buyLimit, sellMarket, sellLimit, getOrderHistory, cancelLimitOrder };

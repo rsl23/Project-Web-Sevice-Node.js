@@ -9,10 +9,10 @@ const {
 const { verifyToken } = require("../middleware/authMiddleware");
 const { fetchCoin, detailAsset } = require("../controller/marketController");
 const {
-  BuyTransaction,
-  SellTransaction,
-  getAllTransactions,
-  getTransactionById,
+  // BuyTransaction,
+  // SellTransaction,
+  // getAllTransactions,
+  // getTransactionById,
   topup,
 } = require("../controller/transactionController");
 
@@ -28,10 +28,10 @@ const {
 } = require("../controller/priceController");
 
 const {
-  buyMarket, buyLimit, sellMarket, sellLimit, getOrderHistory
+  buyMarket, buyLimit, sellMarket, sellLimit, getOrderHistory, cancelLimitOrder
 } = require("../controller/orderController");
 
-const { getAssets, deleteAssets, updateAssets, newAssets } = require("../controller/assetController")
+const { getAssets, deleteAssets, updateAssets, newAssets, syncAssets } = require("../controller/assetController")
 
 const router = express.Router();
 
@@ -51,10 +51,10 @@ router.get("/market/:id", detailAsset);//detail coin
 
 //=========================================== TRANSACTION =====================================================
 
-router.post("/transaction/buy", verifyToken, BuyTransaction);
-router.post("/transaction/sell", verifyToken, SellTransaction);
-router.get("/transaction", verifyToken, getAllTransactions);
-router.get("/transaction/:id_transaksi", verifyToken, getTransactionById);
+// router.post("/transaction/buy", verifyToken, BuyTransaction);
+// router.post("/transaction/sell", verifyToken, SellTransaction);
+// router.get("/transaction", verifyToken, getAllTransactions);
+// router.get("/transaction/:id_transaksi", verifyToken, getTransactionById);
 router.post("/topup", verifyToken, topup);
 
 //============================================ PORTO ===================================
@@ -70,12 +70,14 @@ router.get("/assets", getAssets); //menampilkan semua asset yang ada di database
 router.post("/assets", newAssets); //nambah asset ke database bisa dari axios atau buat sendiri
 router.put("/assets/:id", updateAssets); //update asset yang ada di database
 router.delete("/assets/:id", deleteAssets); //delete suatu asset
+router.get("/assets/fetchAsset", syncAssets)
 
 //======================================= MARKET ORDER & MARKET LIMIT ========================
 router.post("/order/buyMarket", verifyToken, buyMarket); //beli dengan harga terbaik di market - sellLimit
 router.post("/order/buyLimit", verifyToken, buyLimit); //beli dengan pasang harga beli - sellMarket
 router.post("/order/sellMarket", verifyToken, sellMarket); //jual dengan harga terbaik di market - buyLimit
 router.post("/order/sellLimit", verifyToken, sellLimit); //jual dengan pasang harga jual - butMarket
-router.post("/order/getHistory", verifyToken, getOrderHistory);
+router.get("/order/getHistory", verifyToken, getOrderHistory);
+router.delete('/order/cancel-market/:order_id', verifyToken, cancelLimitOrder);
 
 module.exports = router;

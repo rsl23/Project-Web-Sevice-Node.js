@@ -122,5 +122,54 @@ const getAssets = async (req, res) => {
         return res.status(500).json({ error: "Failed to fetch assets" });
     }
 };
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-module.exports = { getAssets, deleteAssets, updateAssets, newAssets };
+const syncAssets = async (req, res) => {
+    try {
+        const perPage = 50; // Maksimum per halaman
+        let page = 1;
+        let hasMore = true;
+        let totalSynced = 0;
+
+        while (hasMore) {
+            const marketRes = await axios.get("https://api.coingecko.com/api/v3/coins/markets", {
+                params: {
+                    vs_currency: "usd",
+                    order: "market_cap_desc",
+                    per_page: perPage,
+                    page,
+                    sparkline: false,
+                },
+            });
+
+            const assets = marketRes.data;
+
+            if (!assets.length) break;
+
+            for (const assetData of assets) {
+                const { id, name, symbol, current_price } = assetData;
+
+                await asset.upsert({
+                    id_asset: id,
+                    name,
+                    symbol,
+                    price: current_price,
+                    is_deleted: false,
+                });
+            }
+
+            totalSynced += assets.length;
+            page += 1;
+
+            // Delay untuk menghindari rate limit
+            await delay(2000); // 2 detik delay
+        }
+
+        return res.status(200).json({ message: `Sinkronisasi ${totalSynced} aset berhasil` });
+    } catch (err) {
+        console.error("Sync error:", err.message);
+        return res.status(500).json({ message: "Gagal sinkronisasi aset", error: err.message });
+    }
+};
+
+module.exports = { getAssets, deleteAssets, updateAssets, newAssets, syncAssets };
