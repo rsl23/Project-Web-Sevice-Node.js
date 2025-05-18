@@ -31,6 +31,10 @@ const {
   buyMarket, buyLimit, sellMarket, sellLimit, getOrderHistory, cancelLimitOrder
 } = require("../controller/orderController");
 
+const {
+  addToWatchlist, getWatchlist, softDeleteWatchlist
+} = require("../controller/watchlistController");
+
 const { getAssets, deleteAssets, updateAssets, newAssets, syncAssets } = require("../controller/assetController")
 
 const router = express.Router();
@@ -80,4 +84,8 @@ router.post("/order/sellLimit", verifyToken, sellLimit); //jual dengan pasang ha
 router.get("/order/getHistory", verifyToken, getOrderHistory);
 router.delete('/order/cancel-market/:order_id', verifyToken, cancelLimitOrder);
 
+//==========================================WATCHLIST=========================================
+router.post("/addwatchlist", verifyToken, addToWatchlist);
+router.get("/getwatchlist", verifyToken, getWatchlist);
+router.delete("/removewatchlist", verifyToken, softDeleteWatchlist);
 module.exports = router;

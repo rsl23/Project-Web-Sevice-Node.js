@@ -6,11 +6,13 @@ const Transaction = require("./Transaction");
 const Portofolio = require("./Portofolio");
 const assetModel = require("./assetModel");
 const orderModel = require("./orderModel");
+const watchListModel = require("./watchListModel");
 
 db.User = User(pool, DataTypes);
 db.Transaction = Transaction(pool, DataTypes);
 db.Portofolio = Portofolio(pool, DataTypes);
 db.asset = assetModel(pool, DataTypes);
 db.Order = orderModel(pool, DataTypes);
+db.watchlist = watchListModel(pool, DataTypes);
 
 module.exports = db;

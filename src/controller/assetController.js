@@ -126,7 +126,7 @@ const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 const syncAssets = async (req, res) => {
     try {
-        const perPage = 50; // Maksimum per halaman
+        const perPage = 50;
         let page = 1;
         let hasMore = true;
         let totalSynced = 0;
@@ -143,26 +143,39 @@ const syncAssets = async (req, res) => {
             });
 
             const assets = marketRes.data;
-
             if (!assets.length) break;
 
             for (const assetData of assets) {
                 const { id, name, symbol, current_price } = assetData;
 
+                // Ambil deskripsi dari endpoint detail
+                let description = null;
+                try {
+                    const detailRes = await axios.get(`https://api.coingecko.com/api/v3/coins/${id}`);
+                    description = detailRes.data?.description?.en || null;
+                } catch (err) {
+                    console.warn(`Gagal ambil deskripsi untuk ${id}:`, err.message);
+                }
+
+                // Upsert ke DB
                 await asset.upsert({
                     id_asset: id,
                     name,
                     symbol,
                     price: current_price,
+                    description,
                     is_deleted: false,
                 });
+
+                // Optional: delay ringan antar detail call biar aman
+                await delay(300); // 0.3 detik
             }
 
             totalSynced += assets.length;
             page += 1;
 
-            // Delay untuk menghindari rate limit
-            await delay(2000); // 2 detik delay
+            // Hindari rate limit
+            await delay(2000); // 2 detik antar halaman
         }
 
         return res.status(200).json({ message: `Sinkronisasi ${totalSynced} aset berhasil` });
