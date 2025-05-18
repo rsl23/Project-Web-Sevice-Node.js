@@ -28,7 +28,7 @@ const {
 } = require("../controller/priceController");
 
 const {
-  buyMarket, buyLimit, sellMarket, sellLimit
+  buyMarket, buyLimit, sellMarket, sellLimit, getOrderHistory
 } = require("../controller/orderController");
 
 const { getAssets, deleteAssets, updateAssets, newAssets } = require("../controller/assetController")
@@ -76,6 +76,6 @@ router.post("/order/buyMarket", verifyToken, buyMarket); //beli dengan harga ter
 router.post("/order/buyLimit", verifyToken, buyLimit); //beli dengan pasang harga beli - sellMarket
 router.post("/order/sellMarket", verifyToken, sellMarket); //jual dengan harga terbaik di market - buyLimit
 router.post("/order/sellLimit", verifyToken, sellLimit); //jual dengan pasang harga jual - butMarket
-
+router.post("/order/getHistory", verifyToken, getOrderHistory);
 
 module.exports = router;

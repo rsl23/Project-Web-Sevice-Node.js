@@ -393,4 +393,38 @@ const sellLimit = async (req, res) => {
     }
 };
 
-module.exports = { buyMarket, buyLimit, sellMarket, sellLimit };
+const getOrderHistory = async (req, res) => {
+    try {
+        const { id_user } = req.user;
+
+        const historyOrders = await Order.findAll({
+            where: {
+                user_id: id_user,
+                [Op.or]: [
+                    {
+                        type: 'limit',
+                        status: 'filled'
+                    },
+                    {
+                        type: 'market',
+                        status: {
+                            [Op.in]: ['filled', 'partial']
+                        }
+                    }
+                ]
+            },
+            order: [['created_at', 'DESC']]
+        });
+
+        return res.status(200).json({
+            message: "Riwayat order berhasil diambil",
+            data: historyOrders
+        });
+    } catch (err) {
+        console.error("Error getOrderHistory:", err);
+        return res.status(500).json({ message: "Gagal mengambil riwayat order", error: err.message });
+    }
+};
+
+
+module.exports = { buyMarket, buyLimit, sellMarket, sellLimit, getOrderHistory };
