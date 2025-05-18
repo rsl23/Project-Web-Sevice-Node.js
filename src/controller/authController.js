@@ -70,6 +70,7 @@ const login = async (req, res) => {
         const token = jwt.sign(
           {
             username: username,
+            id_user: findUser.id_user
           },
           JWT_KEY,
           {

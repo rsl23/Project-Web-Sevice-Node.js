@@ -23,6 +23,7 @@ const BuyTransaction = async (req, res) => {
     const acc = await User.findOne({
       where: { username: user.username },
     });
+
     console.log(acc.saldo);
 
     if (acc.saldo < sumPrice) {

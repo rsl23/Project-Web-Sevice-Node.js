@@ -27,6 +27,10 @@ const {
   marketTrending
 } = require("../controller/priceController");
 
+const {
+  buyMarket, buyLimit, sellMarket, sellLimit
+} = require("../controller/orderController");
+
 const { getAssets, deleteAssets, updateAssets, newAssets } = require("../controller/assetController")
 
 const router = express.Router();
@@ -66,5 +70,12 @@ router.get("/assets", getAssets); //menampilkan semua asset yang ada di database
 router.post("/assets", newAssets); //nambah asset ke database bisa dari axios atau buat sendiri
 router.put("/assets/:id", updateAssets); //update asset yang ada di database
 router.delete("/assets/:id", deleteAssets); //delete suatu asset
+
+//======================================= MARKET ORDER & MARKET LIMIT ========================
+router.post("/order/buyMarket", verifyToken, buyMarket); //beli dengan harga terbaik di market - sellLimit
+router.post("/order/buyLimit", verifyToken, buyLimit); //beli dengan pasang harga beli - sellMarket
+router.post("/order/sellMarket", verifyToken, sellMarket); //jual dengan harga terbaik di market - buyLimit
+router.post("/order/sellLimit", verifyToken, sellLimit); //jual dengan pasang harga jual - butMarket
+
 
 module.exports = router;
