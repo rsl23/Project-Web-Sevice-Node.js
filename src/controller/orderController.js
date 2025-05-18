@@ -1,6 +1,8 @@
 const db = require("../models/fetchModel");
-const { Order } = db;
+const { Order, asset, User, Portofolio } = db;
 const { Op } = require('sequelize');
+
+const axios = require("axios");
 
 const buyMarket = async (req, res) => {
     try {
@@ -11,9 +13,24 @@ const buyMarket = async (req, res) => {
             return res.status(400).json({ message: "Harus isi id_asset dan total (USD)" });
         }
 
+        const user = await User.findOne({ where: { id_user } });
+        if (!user) {
+            return res.status(400).json({ message: "User tidak ditemukan" });
+        }
+        if ((parseFloat(user.saldo) ?? 0) < parseFloat(total)) {
+            return res.status(400).json({ message: "Saldo tidak cukup" });
+        }
+
+        const normalizedIdAsset = id_asset.toLowerCase();
+
+        let assetData = await asset.findOne({ where: { id_asset: normalizedIdAsset, is_deleted: false } });
+        if (!assetData) {
+            return res.status(404).json({ message: "Asset tidak ditemukan di database" });
+        }
+
         const sellOrders = await Order.findAll({
             where: {
-                id_asset,
+                id_asset: normalizedIdAsset,
                 type: "limit",
                 side: "sell",
                 status: { [Op.in]: ['open', 'partial'] },
@@ -43,10 +60,25 @@ const buyMarket = async (req, res) => {
 
             if (amountMatched <= 0) continue;
 
-            // Update sell order
             sellOrder.filled_amount += amountMatched;
             sellOrder.status = sellOrder.filled_amount >= sellOrder.amount ? "filled" : "partial";
             await sellOrder.save();
+
+            const seller = await User.findOne({ where: { id_user: sellOrder.user_id } });
+            if (seller) {
+                seller.saldo = (parseFloat(seller.saldo) || 0) + cost;
+                await seller.save();
+            }
+
+            const sellerPortfolio = await Portofolio.findOne({
+                where: { id_user: sellOrder.user_id, id_asset: normalizedIdAsset }
+            });
+
+            if (sellerPortfolio) {
+                sellerPortfolio.jumlah -= amountMatched;
+                if (sellerPortfolio.jumlah < 0) sellerPortfolio.jumlah = 0; // safety
+                await sellerPortfolio.save();
+            }
 
             priceDetails.push({ price, amount: amountMatched });
 
@@ -59,10 +91,15 @@ const buyMarket = async (req, res) => {
             return res.status(400).json({ message: "Tidak ada koin yang tersedia untuk dibeli di market saat ini" });
         }
 
-        // Buat satu market buy order
+        if (parseFloat(user.saldo) < totalSpent) {
+            return res.status(400).json({ message: "Saldo tidak cukup setelah proses matching order" });
+        }
+        user.saldo = parseFloat(user.saldo) - totalSpent;
+        await user.save();
+
         await Order.create({
             user_id: id_user,
-            id_asset,
+            id_asset: normalizedIdAsset,
             side: "buy",
             type: "market",
             price: priceDetails[0].price,
@@ -71,8 +108,34 @@ const buyMarket = async (req, res) => {
             status: totalSpent < total ? "partial" : "filled",
         });
 
+        let portfolio = await Portofolio.findOne({
+            where: { id_user, id_asset: normalizedIdAsset }
+        });
+
+        if (!portfolio) {
+            portfolio = await Portofolio.create({
+                id_user,
+                id_asset: normalizedIdAsset,
+                avg_price: totalSpent / totalBought,
+                jumlah: totalBought,
+            });
+        } else {
+            const oldTotalAmount = portfolio.jumlah || 0;
+            const oldAvgPrice = portfolio.avg_price || 0;
+
+            const newTotalAmount = oldTotalAmount + totalBought;
+            const newAvgPrice = ((oldAvgPrice * oldTotalAmount) + totalSpent) / newTotalAmount;
+
+            portfolio.avg_price = newAvgPrice;
+            portfolio.jumlah = newTotalAmount;
+            await portfolio.save();
+        }
+
+        assetData.price = priceDetails[0].price;
+        await assetData.save();
+
         const message = totalSpent < total
-            ? `Order partial: hanya berhasil membeli ${totalBought} ${id_asset} senilai $${totalSpent}. Sisa saldo $${(total - totalSpent).toFixed(2)} akan dikembalikan ke portfolio.`
+            ? `Order partial: hanya berhasil membeli ${totalBought} ${normalizedIdAsset} senilai $${totalSpent}. Sisa saldo $${(total - totalSpent).toFixed(2)} akan dikembalikan ke portfolio.`
             : "Buy market berhasil";
 
         return res.status(200).json({
@@ -83,6 +146,7 @@ const buyMarket = async (req, res) => {
         });
 
     } catch (err) {
+        console.error("Error di buyMarket:", err);
         return res.status(500).json({ message: err.message });
     }
 };
@@ -97,6 +161,13 @@ const buyLimit = async (req, res) => {
             return res.status(400).json({ message: "Data tidak lengkap" });
         }
 
+        const normalizedIdAsset = id_asset.toLowerCase();
+
+        const assetData = await asset.findOne({ where: { id_asset: normalizedIdAsset, is_deleted: false } });
+        if (!assetData) {
+            return res.status(404).json({ message: "Asset tidak ditemukan di database" });
+        }
+
         let finalAmount = amount;
         let finalTotal = total;
 
@@ -108,7 +179,7 @@ const buyLimit = async (req, res) => {
 
         await Order.create({
             user_id: id_user,
-            id_asset,
+            id_asset: normalizedIdAsset,
             side: "buy",
             type: "limit",
             price,
@@ -117,8 +188,15 @@ const buyLimit = async (req, res) => {
             status: "open",
         });
 
-        return res.status(201).json({ message: "Buy limit order dibuat", price, finalAmount });
+        return res.status(201).json({
+            message: "Buy limit order dibuat",
+            price,
+            amount: finalAmount,
+            total: finalTotal,
+        });
+
     } catch (err) {
+        console.error("Error di buyLimit:", err);
         return res.status(500).json({ message: err.message });
     }
 };
@@ -132,6 +210,24 @@ const sellMarket = async (req, res) => {
             return res.status(400).json({ message: "Harus isi id_asset dan amount (coin) lebih dari 0" });
         }
 
+        const normalizedIdAsset = id_asset.toLowerCase();
+
+        let assetData = await asset.findOne({
+            where: { id_asset: normalizedIdAsset, is_deleted: false }
+        });
+
+        if (!assetData) {
+            return res.status(404).json({ message: "Asset tidak ditemukan di database" });
+        }
+
+        const sellerPortfolio = await Portofolio.findOne({
+            where: { id_user, id_asset: normalizedIdAsset }
+        });
+
+        if (!sellerPortfolio || (sellerPortfolio.jumlah ?? 0) < amountToSellRequested) {
+            return res.status(400).json({ message: "Jumlah koin di portofolio tidak mencukupi untuk dijual" });
+        }
+
         let remainingToSell = parseFloat(amountToSellRequested);
         let totalSold = 0;
         let totalEarned = 0;
@@ -139,16 +235,13 @@ const sellMarket = async (req, res) => {
 
         const buyOrders = await Order.findAll({
             where: {
-                id_asset,
+                id_asset: normalizedIdAsset,
                 type: "limit",
                 side: "buy",
                 status: { [Op.in]: ['open', 'partial'] },
                 user_id: { [Op.ne]: id_user },
             },
-            order: [
-                ['price', 'DESC'],
-                ['created_at', 'ASC'],
-            ],
+            order: [['price', 'DESC'], ['created_at', 'ASC']],
         });
 
         if (!buyOrders.length) {
@@ -169,6 +262,40 @@ const sellMarket = async (req, res) => {
             buyOrder.status = buyOrder.filled_amount >= buyOrder.amount ? "filled" : "partial";
             await buyOrder.save();
 
+            const buyer = await User.findOne({ where: { id_user: buyOrder.user_id } });
+            if (buyer) {
+                const buyerBalance = parseFloat(buyer.saldo ?? 0); // parsing saldo ke float
+
+                if (buyerBalance < earned) {
+                    return res.status(400).json({ message: `Saldo user ${buyOrder.user_id} tidak cukup saat matching` });
+                }
+
+                buyer.saldo = buyerBalance - earned;
+                await buyer.save();
+
+                let buyerPortfolio = await Portofolio.findOne({
+                    where: { id_user: buyOrder.user_id, id_asset: normalizedIdAsset }
+                });
+
+                if (!buyerPortfolio) {
+                    await Portofolio.create({
+                        id_user: buyOrder.user_id,
+                        id_asset: normalizedIdAsset,
+                        jumlah: amountMatched,
+                        avg_price: price
+                    });
+                } else {
+                    const oldAmount = buyerPortfolio.jumlah ?? 0;
+                    const oldAvg = buyerPortfolio.avg_price ?? 0;
+                    const newTotal = oldAmount + amountMatched;
+                    const newAvg = ((oldAvg * oldAmount) + (amountMatched * price)) / newTotal;
+
+                    buyerPortfolio.jumlah = newTotal;
+                    buyerPortfolio.avg_price = newAvg;
+                    await buyerPortfolio.save();
+                }
+            }
+
             priceLevels.push({ price, amount: amountMatched });
             totalSold += amountMatched;
             totalEarned += earned;
@@ -181,7 +308,7 @@ const sellMarket = async (req, res) => {
 
         await Order.create({
             user_id: id_user,
-            id_asset,
+            id_asset: normalizedIdAsset,
             side: "sell",
             type: "market",
             price: priceLevels[0].price,
@@ -190,11 +317,24 @@ const sellMarket = async (req, res) => {
             status: totalSold < amountToSellRequested ? "partial" : "filled",
         });
 
-        const isPartial = totalSold < amountToSellRequested;
+        sellerPortfolio.jumlah -= totalSold;
+        await sellerPortfolio.save();
 
+        const seller = await User.findOne({ where: { id_user } });
+        if (seller) {
+            const currentBalance = parseFloat(seller.saldo ?? 0);
+            seller.saldo = currentBalance + totalEarned;
+            await seller.save();
+        }
+
+        if (assetData) {
+            assetData.price = priceLevels[0].price;
+            await assetData.save();
+        }
+
+        const isPartial = totalSold < amountToSellRequested;
         const message = isPartial
-            ? `Order partial: hanya berhasil menjual ${totalSold} dari ${amountToSellRequested} koin. ` +
-            `Sisa ${amountToSellRequested - totalSold} koin akan dikembalikan ke portfolio.`
+            ? `Order partial: hanya berhasil menjual ${totalSold} dari ${amountToSellRequested} koin. Sisa ${amountToSellRequested - totalSold} koin tetap di portofolio.`
             : "Sell market berhasil";
 
         return res.status(200).json({
@@ -203,7 +343,9 @@ const sellMarket = async (req, res) => {
             total_earned: totalEarned,
             details: priceLevels,
         });
+
     } catch (err) {
+        console.error("Error di sellMarket:", err);
         return res.status(500).json({ message: err.message });
     }
 };
@@ -226,6 +368,14 @@ const sellLimit = async (req, res) => {
             finalTotal = parseFloat((amount * price).toFixed(2));
         }
 
+        const portfolio = await Portofolio.findOne({
+            where: { id_user, id_asset }
+        });
+
+        if (!portfolio || (portfolio.jumlah ?? 0) < finalAmount) {
+            return res.status(400).json({ message: "Jumlah koin tidak tersedia di portofolio atau tidak mencukupi untuk menjual" });
+        }
+
         await Order.create({
             user_id: id_user,
             id_asset,
@@ -237,7 +387,7 @@ const sellLimit = async (req, res) => {
             status: "open",
         });
 
-        return res.status(201).json({ message: "Sell limit order dibuat", price, finalAmount });
+        return res.status(201).json({ message: "Sell limit order dibuat", price, amount: finalAmount });
     } catch (err) {
         return res.status(500).json({ message: err.message });
     }
