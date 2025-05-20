@@ -3,209 +3,210 @@ const axios = require("axios");
 require("dotenv").config();
 const { User, Transaction, Portofolio } = require("../models/fetchModel");
 
-const BuyTransaction = async (req, res) => {
-  const user = req.user;
-  const { id } = req.query;
-  const { quantity } = req.body;
-  try {
-    const url = `https://api.coingecko.com/api/v3/coins/${id}`;
-    const options = {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        "x-cg-pro-api-key": `${process.env.API_KEY}`,
-      },
-    };
-    const response = await axios(url, options);
-    const price = parseFloat(response.data.market_data?.current_price?.usd);
-    const sumPrice = price * quantity;
+// const BuyTransaction = async (req, res) => {
+//   const user = req.user;
+//   const { id } = req.query;
+//   const { quantity } = req.body;
+//   try {
+//     const url = `https://api.coingecko.com/api/v3/coins/${id}`;
+//     const options = {
+//       method: "GET",
+//       headers: {
+//         accept: "application/json",
+//         "x-cg-pro-api-key": `${process.env.API_KEY}`,
+//       },
+//     };
+//     const response = await axios(url, options);
+//     const price = parseFloat(response.data.market_data?.current_price?.usd);
+//     const sumPrice = price * quantity;
 
-    const acc = await User.findOne({
-      where: { username: user.username },
-    });
-    console.log(acc.saldo);
+//     const acc = await User.findOne({
+//       where: { username: user.username },
+//     });
 
-    if (acc.saldo < sumPrice) {
-      return res.status(400).json({
-        message: "Saldo anda tidak mencukupi, silahkan topup terlebih dahulu",
-      });
-    }
+//     console.log(acc.saldo);
 
-    acc.saldo -= sumPrice;
-    await acc.save();
+//     if (acc.saldo < sumPrice) {
+//       return res.status(400).json({
+//         message: "Saldo anda tidak mencukupi, silahkan topup terlebih dahulu",
+//       });
+//     }
 
-    const transaksi = await Transaction.create({
-      id_user: acc.id_user,
-      id_asset: response.data.id,
-      jumlah: quantity,
-      harga: sumPrice,
-      status: "Buy",
-    });
+//     acc.saldo -= sumPrice;
+//     await acc.save();
 
-    const existing = await Portofolio.findOne({
-      where: {
-        id_user: acc.id_user,
-        id_asset: id,
-      },
-    });
+//     const transaksi = await Transaction.create({
+//       id_user: acc.id_user,
+//       id_asset: response.data.id,
+//       jumlah: quantity,
+//       harga: sumPrice,
+//       status: "Buy",
+//     });
 
-    if (existing) {
-      const totalJumlahLama = existing.jumlah;
-      const avgLama = existing.avg_price;
-      const totalHargaLama = totalJumlahLama * avgLama;
-      const totalJumlahBaru = totalJumlahLama + Number(quantity);
-      const totalHargaBaru = totalHargaLama + sumPrice;
-      const avgBaru = totalHargaBaru / totalJumlahBaru;
+//     const existing = await Portofolio.findOne({
+//       where: {
+//         id_user: acc.id_user,
+//         id_asset: id,
+//       },
+//     });
 
-      existing.jumlah = totalJumlahBaru;
-      existing.avg_price = avgBaru;
-      await existing.save();
-      console.log(totalJumlahBaru);
-      console.log(avgBaru);
-    } else {
-      await Portofolio.create({
-        id_user: acc.id_user,
-        id_asset: id,
-        jumlah: quantity,
-        avg_price: price,
-      });
-    }
+//     if (existing) {
+//       const totalJumlahLama = existing.jumlah;
+//       const avgLama = existing.avg_price;
+//       const totalHargaLama = totalJumlahLama * avgLama;
+//       const totalJumlahBaru = totalJumlahLama + Number(quantity);
+//       const totalHargaBaru = totalHargaLama + sumPrice;
+//       const avgBaru = totalHargaBaru / totalJumlahBaru;
 
-    return res.status(200).json({ transaksi });
-  } catch (err) {
-    return res.status(500).json({ message: err.message });
-  }
-};
+//       existing.jumlah = totalJumlahBaru;
+//       existing.avg_price = avgBaru;
+//       await existing.save();
+//       console.log(totalJumlahBaru);
+//       console.log(avgBaru);
+//     } else {
+//       await Portofolio.create({
+//         id_user: acc.id_user,
+//         id_asset: id,
+//         jumlah: quantity,
+//         avg_price: price,
+//       });
+//     }
 
-const SellTransaction = async (req, res) => {
-  const user = req.user;
-  const { id } = req.query;
-  const { quantity } = req.body;
+//     return res.status(200).json({ transaksi });
+//   } catch (err) {
+//     return res.status(500).json({ message: err.message });
+//   }
+// };
 
-  try {
-    const url = `https://api.coingecko.com/api/v3/coins/${id}`;
-    const options = {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        "x-cg-pro-api-key": `${process.env.API_KEY}`,
-      },
-    };
-    const response = await axios(url, options);
-    const price = parseFloat(response.data.market_data?.current_price?.usd);
-    const totalValue = price * quantity;
+// const SellTransaction = async (req, res) => {
+//   const user = req.user;
+//   const { id } = req.query;
+//   const { quantity } = req.body;
 
-    const acc = await User.findOne({
-      where: { username: user.username },
-    });
+//   try {
+//     const url = `https://api.coingecko.com/api/v3/coins/${id}`;
+//     const options = {
+//       method: "GET",
+//       headers: {
+//         accept: "application/json",
+//         "x-cg-pro-api-key": `${process.env.API_KEY}`,
+//       },
+//     };
+//     const response = await axios(url, options);
+//     const price = parseFloat(response.data.market_data?.current_price?.usd);
+//     const totalValue = price * quantity;
 
-    const portofolio = await Portofolio.findOne({
-      where: {
-        id_user: acc.id_user,
-        id_asset: id,
-      },
-    });
+//     const acc = await User.findOne({
+//       where: { username: user.username },
+//     });
 
-    const ownedAsset = portofolio ? portofolio.jumlah : 0;
+//     const portofolio = await Portofolio.findOne({
+//       where: {
+//         id_user: acc.id_user,
+//         id_asset: id,
+//       },
+//     });
 
-    if (ownedAsset < quantity) {
-      return res.status(400).json({
-        message: `Gagal menjual. Anda hanya memiliki ${ownedAsset} unit ${id}`,
-      });
-    }
+//     const ownedAsset = portofolio ? portofolio.jumlah : 0;
 
-    acc.saldo = parseFloat(acc.saldo) + totalValue;
-    await acc.save();
+//     if (ownedAsset < quantity) {
+//       return res.status(400).json({
+//         message: `Gagal menjual. Anda hanya memiliki ${ownedAsset} unit ${id}`,
+//       });
+//     }
 
-    const transaksi = await Transaction.create({
-      id_user: acc.id_user,
-      id_asset: id,
-      jumlah: quantity,
-      harga: totalValue,
-      status: "Sell",
-    });
+//     acc.saldo = parseFloat(acc.saldo) + totalValue;
+//     await acc.save();
 
-    const sisaJumlah = ownedAsset - quantity;
-    if (sisaJumlah === 0) {
-      await Portofolio.destroy({
-        where: {
-          id_user: acc.id_user,
-          id_asset: id,
-        },
-      });
-    } else {
-      portofolio.jumlah = sisaJumlah;
-      await portofolio.save();
-    }
+//     const transaksi = await Transaction.create({
+//       id_user: acc.id_user,
+//       id_asset: id,
+//       jumlah: quantity,
+//       harga: totalValue,
+//       status: "Sell",
+//     });
 
-    return res.status(200).json({
-      message: `Berhasil menjual ${quantity} unit ${id}`,
-      transaksi,
-    });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ message: err.message });
-  }
-};
+//     const sisaJumlah = ownedAsset - quantity;
+//     if (sisaJumlah === 0) {
+//       await Portofolio.destroy({
+//         where: {
+//           id_user: acc.id_user,
+//           id_asset: id,
+//         },
+//       });
+//     } else {
+//       portofolio.jumlah = sisaJumlah;
+//       await portofolio.save();
+//     }
 
-const getAllTransactions = async (req, res) => {
-  const user = req.user;
+//     return res.status(200).json({
+//       message: `Berhasil menjual ${quantity} unit ${id}`,
+//       transaksi,
+//     });
+//   } catch (err) {
+//     console.error(err);
+//     return res.status(500).json({ message: err.message });
+//   }
+// };
 
-  try {
-    const acc = await User.findOne({
-      where: { username: user.username },
-    });
+// const getAllTransactions = async (req, res) => {
+//   const user = req.user;
 
-    if (!acc) {
-      return res.status(404).json({ message: "User tidak ditemukan" });
-    }
+//   try {
+//     const acc = await User.findOne({
+//       where: { username: user.username },
+//     });
 
-    const transaksi = await Transaction.findAll({
-      where: {
-        id_user: acc.id_user,
-      },
-      order: [["createdAt", "DESC"]],
-    });
+//     if (!acc) {
+//       return res.status(404).json({ message: "User tidak ditemukan" });
+//     }
 
-    return res.status(200).json({ transaksi });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ message: err.message });
-  }
-};
+//     const transaksi = await Transaction.findAll({
+//       where: {
+//         id_user: acc.id_user,
+//       },
+//       order: [["createdAt", "DESC"]],
+//     });
 
-const getTransactionById = async (req, res) => {
-  const user = req.user;
-  const { id_transaksi } = req.params;
+//     return res.status(200).json({ transaksi });
+//   } catch (err) {
+//     console.error(err);
+//     return res.status(500).json({ message: err.message });
+//   }
+// };
 
-  try {
-    const acc = await User.findOne({
-      where: { username: user.username },
-    });
+// const getTransactionById = async (req, res) => {
+//   const user = req.user;
+//   const { id_transaksi } = req.params;
 
-    if (!acc) {
-      return res.status(404).json({ message: "User tidak ditemukan" });
-    }
+//   try {
+//     const acc = await User.findOne({
+//       where: { username: user.username },
+//     });
 
-    const transaksi = await Transaction.findOne({
-      where: {
-        id_transaksi: id_transaksi,
-        id_user: acc.id_user,
-      },
-    });
+//     if (!acc) {
+//       return res.status(404).json({ message: "User tidak ditemukan" });
+//     }
 
-    if (!transaksi) {
-      return res
-        .status(404)
-        .json({ message: "Transaksi tidak ditemukan atau bukan milik Anda" });
-    }
+//     const transaksi = await Transaction.findOne({
+//       where: {
+//         id_transaksi: id_transaksi,
+//         id_user: acc.id_user,
+//       },
+//     });
 
-    return res.status(200).json({ transaksi });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ message: err.message });
-  }
-};
+//     if (!transaksi) {
+//       return res
+//         .status(404)
+//         .json({ message: "Transaksi tidak ditemukan atau bukan milik Anda" });
+//     }
+
+//     return res.status(200).json({ transaksi });
+//   } catch (err) {
+//     console.error(err);
+//     return res.status(500).json({ message: err.message });
+//   }
+// };
 
 const topup = async (req, res) => {
   const user = req.user;
@@ -328,10 +329,10 @@ const convertAll = async (req, res) => {
 };
 
 module.exports = {
-  BuyTransaction,
-  SellTransaction,
-  getAllTransactions,
-  getTransactionById,
+  // BuyTransaction,
+  // SellTransaction,
+  // getAllTransactions,
+  // getTransactionById,
   topup,
   getConvert,
   convertAll,

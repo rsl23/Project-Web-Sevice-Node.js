@@ -10,7 +10,6 @@ const price = async (req, res) => {
             sparkline: false
         };
 
-
         const response = await axios.get("https://api.coingecko.com/api/v3/coins/markets", {
             params
         });
