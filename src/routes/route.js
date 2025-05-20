@@ -14,6 +14,8 @@ const {
   getAllTransactions,
   getTransactionById,
   topup,
+  getConvert,
+  convertAll,
 } = require("../controller/transactionController");
 
 const {
@@ -41,6 +43,8 @@ router.post("/transaction/sell", verifyToken, SellTransaction);
 router.get("/transaction", verifyToken, getAllTransactions);
 router.get("/transaction/:id_transaksi", verifyToken, getTransactionById);
 router.post("/topup", verifyToken, topup);
+router.get("/convert", verifyToken, getConvert);
+router.post("/convert-all", verifyToken, convertAll);
 
 //============================================ PORTO ===================================
 router.get("/portofolio/getAll", verifyToken, fetchPorto);

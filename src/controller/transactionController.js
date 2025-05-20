@@ -241,10 +241,98 @@ const topup = async (req, res) => {
   }
 };
 
+const getConvert = async (req, res) => {
+  const { from, to, amount } = req.query;
+
+  if (!from || !to || !amount) {
+    return res
+      .status(400)
+      .json({ error: "Parameter from, to, dan amount wajib diisi" });
+  }
+
+  try {
+    const response = await axios.get(
+      "https://api.coingecko.com/api/v3/simple/price",
+      {
+        params: {
+          ids: from,
+          vs_currencies: to,
+        },
+      }
+    );
+
+    const rate = response.data[from]?.[to];
+    if (!rate) {
+      return res
+        .status(400)
+        .json({ error: "Kombinasi koin tidak ditemukan atau tidak valid" });
+    }
+
+    const converted = rate * parseFloat(amount);
+    res.json({
+      from,
+      to,
+      amount: parseFloat(amount),
+      rate,
+      result: converted,
+    });
+  } catch (err) {
+    res.status(500).json({ error: "Gagal mengambil data dari API" });
+  }
+};
+
+const convertAll = async (req, res) => {
+  const { target, coins } = req.body;
+
+  if (!target || !Array.isArray(coins) || coins.length === 0) {
+    return res
+      .status(400)
+      .json({ error: "Harap masukkan target dan daftar coins yang valid" });
+  }
+
+  const coinIds = coins.map((c) => c.id).join(",");
+
+  try {
+    const response = await axios.get(
+      "https://api.coingecko.com/api/v3/simple/price",
+      {
+        params: {
+          ids: coinIds,
+          vs_currencies: target,
+        },
+      }
+    );
+
+    let total = 0;
+    const details = coins.map((coin) => {
+      const rate = response.data[coin.id]?.[target];
+      const value = rate ? rate * coin.amount : 0;
+      total += value;
+      return {
+        id: coin.id,
+        amount: coin.amount,
+        rate: rate || 0,
+        value,
+      };
+    });
+
+    res.json({
+      target,
+      total_value: parseFloat(total.toFixed(2)),
+      details,
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: "Gagal menghubungi CoinGecko API" });
+  }
+};
+
 module.exports = {
   BuyTransaction,
   SellTransaction,
   getAllTransactions,
   getTransactionById,
   topup,
+  getConvert,
+  convertAll,
 };
