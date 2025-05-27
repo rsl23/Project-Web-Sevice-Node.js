@@ -26,24 +26,35 @@ const {
 const {
   price,
   coinPrice,
-  marketTrending
+  marketTrending,
 } = require("../controller/priceController");
 
 const {
-  buyMarket, buyLimit, sellMarket, sellLimit, getOrderHistory, cancelLimitOrder
+  buyMarket,
+  buyLimit,
+  sellMarket,
+  sellLimit,
+  getOrderHistory,
+  cancelLimitOrder,
 } = require("../controller/orderController");
 
 const {
-  addToWatchlist, getWatchlist, softDeleteWatchlist
+  addToWatchlist,
+  getWatchlist,
+  softDeleteWatchlist,
 } = require("../controller/watchlistController");
 
-const { getAssets, deleteAssets, updateAssets, newAssets, syncAssets } = require("../controller/assetController")
+const {
+  getAssets,
+  deleteAssets,
+  updateAssets,
+  newAssets,
+  syncAssets,
+} = require("../controller/assetController");
 
 const { registerAdmin, loginAdmin } = require("../controller/adminController");
 
 const router = express.Router();
-
-
 
 //==================================== LOGIN & REGISTER ==================================================
 router.post("/auth/register", register);
@@ -55,7 +66,7 @@ router.post("/auth/reset_password", updatePassword);
 
 //===================================== MARKET ==============================================================
 router.get("/market", fetchCoin); //list coin
-router.get("/market/:id", detailAsset);//detail coin
+router.get("/market/:id", detailAsset); //detail coin
 
 //=========================================== TRANSACTION =====================================================
 
@@ -71,16 +82,16 @@ router.post("/convert-all", verifyToken, convertAll);
 router.get("/portofolio/getAll", verifyToken, fetchPorto);
 router.get("/portofolio/getDetailPorto", verifyToken, detailPorto);
 //============================================Market Price===================================
-router.get("/prices", price);//dapetin coin + price + marketcap dll
-router.get("/price/:coin", coinPrice);//harga coin tertentu
-router.get("market/trending", marketTrending);//dapetin market trending
+router.get("/prices", price); //dapetin coin + price + marketcap dll
+router.get("/price/:coin", coinPrice); //harga coin tertentu
+router.get("market/trending", marketTrending); //dapetin market trending
 
 //======================================== ASSET ============================================
 router.get("/assets", verifyAdmin, getAssets); //menampilkan semua asset yang ada di database + axios
 router.post("/assets", verifyAdmin, newAssets); //nambah asset ke database bisa dari axios atau buat sendiri
 router.put("/assets/:id", verifyAdmin, updateAssets); //update asset yang ada di database
 router.delete("/assets/:id", verifyAdmin, deleteAssets); //delete suatu asset
-router.get("/assets/fetchAsset", verifyAdmin, syncAssets)
+router.get("/assets/fetchAsset", verifyAdmin, syncAssets);
 
 //======================================= MARKET ORDER & MARKET LIMIT ========================
 router.post("/order/buyMarket", verifyToken, buyMarket); //beli dengan harga terbaik di market - sellLimit
@@ -88,7 +99,7 @@ router.post("/order/buyLimit", verifyToken, buyLimit); //beli dengan pasang harg
 router.post("/order/sellMarket", verifyToken, sellMarket); //jual dengan harga terbaik di market - buyLimit
 router.post("/order/sellLimit", verifyToken, sellLimit); //jual dengan pasang harga jual - butMarket
 router.get("/order/getHistory", verifyToken, getOrderHistory);
-router.delete('/order/cancel-market/:order_id', verifyToken, cancelLimitOrder);
+router.delete("/order/cancel-market/:order_id", verifyToken, cancelLimitOrder);
 
 //==========================================WATCHLIST=========================================
 router.post("/addwatchlist", verifyToken, addToWatchlist);
