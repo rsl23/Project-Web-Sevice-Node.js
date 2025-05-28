@@ -23,19 +23,24 @@ const buyMarket = async (req, res) => {
       return res.status(400).json({ message: "Saldo tidak cukup" });
     }
 
-    const normalizedIdAsset = id_asset;
+    const normalizedIdAsset = id_asset.toLowerCase();
 
     // Cek asset slot jika user subscription Free
     if (user.subscription === "Free") {
+      // Hitung asset yang user sudah miliki di portfolio
       const userAssetCount = await Portofolio.count({
         where: {
           id_user,
           jumlah: { [Op.gt]: 0 },
         },
       });
+
+      // Cek apakah user sudah memiliki aset ini
       const existingAsset = await Portofolio.findOne({
         where: { id_user, id_asset: normalizedIdAsset },
       });
+
+      // Jika user belum punya aset ini dan jumlah aset sudah mencapai limit
       if (!existingAsset && userAssetCount >= user.asset_slot) {
         return res.status(400).json({
           message: `Subscription Free hanya bisa memiliki ${user.asset_slot} jenis aset. Upgrade ke Pro untuk slot tidak terbatas.`,
@@ -43,49 +48,115 @@ const buyMarket = async (req, res) => {
       }
     }
 
-    // Ambil harga dari API eksternal (CoinGecko)
-    let price;
-    try {
-      const url = `https://api.coingecko.com/api/v3/coins/${normalizedIdAsset}`;
-      const options = {
-        method: "GET",
-        headers: {
-          accept: "application/json",
-          "x-cg-pro-api-key": `${process.env.API_KEY}`,
-        },
-      };
-      const response = await axios(url, options);
-      price = parseFloat(response.data.market_data?.current_price?.usd);
-      if (!price || isNaN(price)) {
-        return res.status(404).json({ message: "Harga asset tidak ditemukan di API" });
-      }
-    } catch (err) {
-      return res.status(500).json({ message: "Gagal mengambil harga asset dari API" });
+    let assetData = await asset.findOne({
+      where: { id_asset: normalizedIdAsset, is_deleted: false },
+    });
+    if (!assetData) {
+      return res
+        .status(404)
+        .json({ message: "Asset tidak ditemukan di database" });
     }
 
-    // Hitung jumlah coin yang bisa dibeli
-    const amountToBuy = parseFloat((total / price).toFixed(8));
-    const sumPrice = parseFloat((amountToBuy * price).toFixed(2));
+    const sellOrders = await Order.findAll({
+      where: {
+        id_asset: normalizedIdAsset,
+        type: "limit",
+        side: "sell",
+        status: { [Op.in]: ["open", "partial"] },
+        user_id: { [Op.ne]: id_user },
+      },
+      order: [
+        ["price", "ASC"],
+        ["created_at", "ASC"],
+      ],
+    });
 
-    if (user.saldo < sumPrice) {
-      return res.status(400).json({
-        message: "Saldo anda tidak mencukupi, silahkan topup terlebih dahulu",
+    if (!sellOrders.length) {
+      return res
+        .status(404)
+        .json({
+          message: "Tidak ada sell order yang tersedia di market saat ini",
+        });
+    }
+
+    let remainingUSD = parseFloat(total);
+    let totalBought = 0;
+    let totalSpent = 0;
+    const priceDetails = [];
+
+    for (const sellOrder of sellOrders) {
+      if (remainingUSD <= 0) break;
+
+      const remainingSellAmount = sellOrder.amount - sellOrder.filled_amount;
+      const price = sellOrder.price;
+      const maxBuyableAtThisLevel = parseFloat(
+        (remainingUSD / price).toFixed(8)
+      );
+
+      const amountMatched = Math.min(
+        remainingSellAmount,
+        maxBuyableAtThisLevel
+      );
+      const cost = parseFloat((amountMatched * price).toFixed(2));
+
+      if (amountMatched <= 0) continue;
+
+      sellOrder.filled_amount += amountMatched;
+      sellOrder.status =
+        sellOrder.filled_amount >= sellOrder.amount ? "filled" : "partial";
+      await sellOrder.save();
+
+      const seller = await User.findOne({
+        where: { id_user: sellOrder.user_id },
       });
+      if (seller) {
+        seller.saldo = (parseFloat(seller.saldo) || 0) + cost;
+        await seller.save();
+      }
+
+      const sellerPortfolio = await Portofolio.findOne({
+        where: { id_user: sellOrder.user_id, id_asset: normalizedIdAsset },
+      });
+
+      if (sellerPortfolio) {
+        sellerPortfolio.jumlah -= amountMatched;
+        if (sellerPortfolio.jumlah < 0) sellerPortfolio.jumlah = 0; // safety
+        await sellerPortfolio.save();
+      }
+
+      priceDetails.push({ price, amount: amountMatched });
+
+      totalBought += amountMatched;
+      totalSpent += cost;
+      remainingUSD -= cost;
     }
 
-    user.saldo -= sumPrice;
+    if (totalBought === 0) {
+      return res
+        .status(400)
+        .json({
+          message:
+            "Tidak ada koin yang tersedia untuk dibeli di market saat ini",
+        });
+    }
+
+    if (parseFloat(user.saldo) < totalSpent) {
+      return res
+        .status(400)
+        .json({ message: "Saldo tidak cukup setelah proses matching order" });
+    }
+    user.saldo = parseFloat(user.saldo) - totalSpent;
     await user.save();
 
-    // Simpan order market buy (tanpa matching order book, langsung beli dari API)
     await Order.create({
       user_id: id_user,
       id_asset: normalizedIdAsset,
       side: "buy",
       type: "market",
-      price: price,
-      amount: amountToBuy,
-      total: sumPrice,
-      status: "filled",
+      price: priceDetails[0].price,
+      amount: totalBought,
+      total: totalSpent,
+      status: totalSpent < total ? "partial" : "filled",
     });
 
     let portfolio = await Portofolio.findOne({
@@ -96,25 +167,37 @@ const buyMarket = async (req, res) => {
       portfolio = await Portofolio.create({
         id_user,
         id_asset: normalizedIdAsset,
-        avg_price: price,
-        jumlah: amountToBuy,
+        avg_price: totalSpent / totalBought,
+        jumlah: totalBought,
       });
     } else {
       const oldTotalAmount = portfolio.jumlah || 0;
       const oldAvgPrice = portfolio.avg_price || 0;
-      const newTotalAmount = oldTotalAmount + amountToBuy;
+
+      const newTotalAmount = oldTotalAmount + totalBought;
       const newAvgPrice =
-        (oldAvgPrice * oldTotalAmount + sumPrice) / newTotalAmount;
+        (oldAvgPrice * oldTotalAmount + totalSpent) / newTotalAmount;
+
       portfolio.avg_price = newAvgPrice;
       portfolio.jumlah = newTotalAmount;
       await portfolio.save();
     }
 
+    assetData.price = priceDetails[0].price;
+    await assetData.save();
+
+    const message =
+      totalSpent < total
+        ? `Order partial: hanya berhasil membeli ${totalBought} ${normalizedIdAsset} senilai $${totalSpent}. Sisa saldo $${(
+            total - totalSpent
+          ).toFixed(2)} akan dikembalikan ke portfolio.`
+        : "Buy market berhasil";
+
     return res.status(200).json({
-      message: "Buy market berhasil dari API eksternal",
-      amount_bought: amountToBuy,
-      total_spent: sumPrice,
-      price: price,
+      message,
+      amount_bought: totalBought,
+      total_spent: totalSpent,
+      details: priceDetails,
     });
   } catch (err) {
     console.error("Error di buyMarket:", err);
@@ -136,15 +219,20 @@ const buyLimit = async (req, res) => {
     // Cek asset slot jika user bersubscription Free
     const user = await User.findOne({ where: { id_user } });
     if (user.subscription === "Free") {
+      // Hitung asset yang user sudah miliki di portfolio
       const userAssetCount = await Portofolio.count({
         where: {
           id_user,
           jumlah: { [Op.gt]: 0 },
         },
       });
+
+      // Cek apakah user sudah memiliki aset ini
       const existingAsset = await Portofolio.findOne({
         where: { id_user, id_asset: normalizedIdAsset },
       });
+
+      // Jika user belum punya aset ini dan jumlah aset sudah mencapai limit
       if (!existingAsset && userAssetCount >= user.asset_slot) {
         return res.status(400).json({
           message: `Subscription Free hanya bisa memiliki ${user.asset_slot} jenis aset. Upgrade ke Pro untuk slot tidak terbatas.`,
@@ -152,30 +240,14 @@ const buyLimit = async (req, res) => {
       }
     }
 
-    // Ambil harga coin dari API eksternal (CoinGecko)
-    let apiPrice;
-    try {
-      const url = `https://api.coingecko.com/api/v3/coins/${normalizedIdAsset}`;
-      const options = {
-        method: "GET",
-        headers: {
-          accept: "application/json",
-          "x-cg-pro-api-key": `${process.env.API_KEY}`,
-        },
-      };
-      const response = await axios(url, options);
-      apiPrice = parseFloat(response.data.market_data?.current_price?.usd);
-      if (!apiPrice || isNaN(apiPrice)) {
-        return res.status(404).json({ message: "Harga asset tidak ditemukan di API" });
-      }
-    } catch (err) {
-      return res.status(500).json({ message: "Gagal mengambil harga asset dari API" });
+    const assetData = await asset.findOne({
+      where: { id_asset: normalizedIdAsset, is_deleted: false },
+    });
+    if (!assetData) {
+      return res
+        .status(404)
+        .json({ message: "Asset tidak ditemukan di database" });
     }
-
-    // Validasi: harga limit tidak boleh terlalu jauh dari harga pasar (opsional, bisa dihapus jika tidak perlu)
-    // if (Math.abs(price - apiPrice) / apiPrice > 0.5) {
-    //   return res.status(400).json({ message: "Harga limit terlalu jauh dari harga pasar saat ini" });
-    // }
 
     let finalAmount = amount;
     let finalTotal = total;
@@ -198,11 +270,10 @@ const buyLimit = async (req, res) => {
     });
 
     return res.status(201).json({
-      message: "Buy limit order dibuat (harga referensi dari API)",
+      message: "Buy limit order dibuat",
       price,
       amount: finalAmount,
       total: finalTotal,
-      market_price: apiPrice,
     });
   } catch (err) {
     console.error("Error di buyLimit:", err);
