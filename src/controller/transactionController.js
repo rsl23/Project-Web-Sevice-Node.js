@@ -2,7 +2,9 @@ const { Op, Sequelize } = require("sequelize");
 const axios = require("axios");
 require("dotenv").config();
 const { User, Transaction, Portofolio } = require("../models/fetchModel");
-
+const multer = require("multer");
+const fs = require("fs");
+const path = require("path");
 // const BuyTransaction = async (req, res) => {
 //   const user = req.user;
 //   const { id } = req.query;
@@ -207,39 +209,74 @@ const { User, Transaction, Portofolio } = require("../models/fetchModel");
 //     return res.status(500).json({ message: err.message });
 //   }
 // };
+const storage = multer.diskStorage({
+  destination: (req, file, callback) => {
+    const folderName = "uploads";
 
-const topup = async (req, res) => {
-  const user = req.user;
-  const { topup } = req.body;
-  try {
-    const acc = await User.findOne({
-      where: { username: user.username },
-    });
-
-    if (!acc) {
-      return res.status(404).json({ message: "User tidak ditemukan" });
-    }
-    if (!topup) {
-      return res
-        .status(400)
-        .json({ message: "Tolong masukan jumlah saldo yang valid" });
+    if (!fs.existsSync(folderName)) {
+      fs.mkdirSync(folderName, { recursive: true });
     }
 
-    const update = await User.update(
-      {
-        saldo: parseFloat(acc.saldo) + parseFloat(topup),
-      },
-      {
+    callback(null, folderName);
+  },
+  filename: (req, file, callback) => {
+    const fileExt = path.extname(file.originalname);
+    const filename = Date.now() + "-" + file.originalname;
+    callback(null, filename);
+  },
+});
+
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 5 * 1024 * 1024 }, 
+}).single("gambar");
+
+const topup = (req, res) => {
+  upload(req, res, async (err) => {
+    if (err) {
+      return res.status(400).json({ message: "Upload gagal", error: err.message });
+    }
+
+    if (!req.file) {
+      return res.status(400).json({ message: "Bukti transfer wajib diupload" });
+    }
+
+    const user = req.user;
+    const { topup } = req.body;
+
+    try {
+      const acc = await User.findOne({
         where: { username: user.username },
+      });
+
+      if (!acc) {
+        return res.status(404).json({ message: "User tidak ditemukan" });
       }
-    );
 
-    console.log(parseFloat(topup));
+      if (!topup) {
+        return res.status(400).json({ message: "Masukkan jumlah topup yang valid" });
+      }
 
-    return res.status(200).json({ message: "Berhasil topup" });
-  } catch (err) {
-    return res.status(500).json({ message: err.message });
-  }
+      await User.update(
+        {
+          saldo: parseFloat(acc.saldo) + parseFloat(topup),
+        },
+        {
+          where: { username: user.username },
+        }
+      );
+
+      // Berhasil
+      return res.status(200).json({
+        message: "Topup berhasil",
+        topup: parseFloat(topup),
+        bukti: req.file.filename,
+        path: req.file.path,
+      });
+    } catch (err) {
+      return res.status(500).json({ message: err.message });
+    }
+  });
 };
 
 const getConvert = async (req, res) => {
