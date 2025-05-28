@@ -50,6 +50,7 @@ const {
 } = require("../controller/assetController");
 
 const { registerAdmin, loginAdmin } = require("../controller/adminController");
+// const { uploadBuktiTF } = require("../controller/uploadFile");
 
 const router = express.Router();
 
@@ -107,5 +108,7 @@ router.delete("/removewatchlist", verifyToken, softDeleteWatchlist);
 //==========================================ADMIN=============================================
 router.post("/registeradmin", registerAdmin);
 router.post("/loginadmin", loginAdmin);
+
+
 
 module.exports = router;
