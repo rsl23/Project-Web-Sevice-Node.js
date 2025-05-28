@@ -151,7 +151,7 @@ const syncAssets = async (req, res) => {
                 // Ambil deskripsi dari endpoint detail
                 let description = null;
                 try {
-                    const detailRes = await axios.get(`https://api.coingecko.com/api/v3/coins/${id}`);
+                    const detailRes = await axios.get(`https://api.coingecko.com/api/v3/coins/${id}?localization=false`);;
                     description = detailRes.data?.description?.en || null;
                 } catch (err) {
                     console.warn(`Gagal ambil deskripsi untuk ${id}:`, err.message);
@@ -168,7 +168,7 @@ const syncAssets = async (req, res) => {
                 });
 
                 // Optional: delay ringan antar detail call biar aman
-                await delay(300); // 0.3 detik
+                await delay(5000); // 0.3 detik
             }
 
             totalSynced += assets.length;
