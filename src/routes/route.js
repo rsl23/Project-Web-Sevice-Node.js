@@ -9,10 +9,7 @@ const {
 const { verifyToken, verifyAdmin } = require("../middleware/authMiddleware");
 const { fetchCoin, detailAsset } = require("../controller/marketController");
 const {
-  // BuyTransaction,
-  // SellTransaction,
-  // getAllTransactions,
-  // getTransactionById,
+  BuySubscription,
   topup,
   getConvert,
   convertAll,
@@ -77,6 +74,7 @@ router.get("/market/:id", detailAsset); //detail coin
 router.post("/topup", verifyToken, topup);
 router.get("/convert", verifyToken, getConvert);
 router.post("/convert-all", verifyToken, convertAll);
+router.post("/Subscribe", verifyToken, BuySubscription); //beli subscription
 
 //============================================ PORTO ===================================
 router.get("/portofolio/getAll", verifyToken, fetchPorto);
