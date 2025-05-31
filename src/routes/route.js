@@ -62,14 +62,10 @@ router.get("/auth/me", verifyToken, profile);
 router.post("/auth/request_verification", requestPasswordReset);
 router.post("/auth/reset_password", updatePassword);
 
-
-
-
-//Belum ada di proposal
 //===================================== MARKET ==============================================================
 router.get("/market", fetchCoin); //list coin
 router.get("/market/:id", detailAsset); //detail coin
-//Belum ada di proposal
+
 //=========================================== TRANSACTION =====================================================
 // router.post("/transaction/buy", verifyToken, BuyTransaction);
 // router.post("/transaction/sell", verifyToken, SellTransaction);
@@ -78,10 +74,7 @@ router.get("/market/:id", detailAsset); //detail coin
 router.post("/topup", verifyToken, topup);
 router.get("/convert", verifyToken, getConvert);
 router.post("/convert-all", verifyToken, convertAll);
-router.post("/Subscribe", verifyToken, BuySubscription); //beli subscription
-
-
-
+router.post("/subscribe", verifyToken, BuySubscription); //beli subscription
 
 //============================================ PORTO ===================================
 router.get("/portofolio/getAll", verifyToken, fetchPorto);
@@ -114,7 +107,5 @@ router.delete("/removewatchlist", verifyToken, softDeleteWatchlist);
 //==========================================ADMIN=============================================
 router.post("/registeradmin", registerAdmin);
 router.post("/loginadmin", loginAdmin);
-
-
 
 module.exports = router;
