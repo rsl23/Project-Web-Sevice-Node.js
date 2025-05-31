@@ -50,7 +50,6 @@ const {
 } = require("../controller/assetController");
 
 const { registerAdmin, loginAdmin } = require("../controller/adminController");
-// const { uploadBuktiTF } = require("../controller/uploadFile");
 
 const router = express.Router();
 
