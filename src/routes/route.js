@@ -62,12 +62,15 @@ router.get("/auth/me", verifyToken, profile);
 router.post("/auth/request_verification", requestPasswordReset);
 router.post("/auth/reset_password", updatePassword);
 
+
+
+
+//Belum ada di proposal
 //===================================== MARKET ==============================================================
 router.get("/market", fetchCoin); //list coin
 router.get("/market/:id", detailAsset); //detail coin
-
+//Belum ada di proposal
 //=========================================== TRANSACTION =====================================================
-
 // router.post("/transaction/buy", verifyToken, BuyTransaction);
 // router.post("/transaction/sell", verifyToken, SellTransaction);
 // router.get("/transaction", verifyToken, getAllTransactions);
@@ -77,12 +80,15 @@ router.get("/convert", verifyToken, getConvert);
 router.post("/convert-all", verifyToken, convertAll);
 router.post("/Subscribe", verifyToken, BuySubscription); //beli subscription
 
+
+
+
 //============================================ PORTO ===================================
 router.get("/portofolio/getAll", verifyToken, fetchPorto);
 router.get("/portofolio/getDetailPorto", verifyToken, detailPorto);
 //============================================Market Price===================================
 router.get("/prices", price); //dapetin coin + price + marketcap dll
-router.get("/price/:coin", coinPrice); //harga coin tertentu
+router.get("/prices/:coin", coinPrice); //harga coin tertentu
 router.get("market/trending", marketTrending); //dapetin market trending
 
 //======================================== ASSET ============================================
