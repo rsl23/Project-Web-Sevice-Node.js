@@ -41,7 +41,7 @@ const loginAdmin = async (req, res) => {
             { expiresIn: '1d' }
         );
 
-        return res.json({ message: 'Login berhasil', token });
+        return res.json({ message: `Admin ${username}, Login berhasil`, token });
     } catch (err) {
         console.error(err);
         return res.status(500).json({ message: 'Login gagal' });

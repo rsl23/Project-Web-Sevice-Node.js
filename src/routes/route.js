@@ -66,15 +66,14 @@ router.get("/market", fetchCoin); //list coin
 router.get("/market/:id", detailAsset); //detail coin
 
 //=========================================== TRANSACTION =====================================================
-// router.post("/transaction/buy", verifyToken, BuyTransaction);
-// router.post("/transaction/sell", verifyToken, SellTransaction);
-// router.get("/transaction", verifyToken, getAllTransactions);
-// router.get("/transaction/:id_transaksi", verifyToken, getTransactionById);
 router.post("/topup", verifyToken, topup);
 router.get("/convert", verifyToken, getConvert);
 router.post("/convert-all", verifyToken, convertAll);
 router.post("/subscribe", verifyToken, BuySubscription); //beli subscription
 
+
+
+//belum ta buat documentasi bawah ini
 //============================================ PORTO ===================================
 router.get("/portofolio/getAll", verifyToken, fetchPorto);
 router.get("/portofolio/getDetailPorto", verifyToken, detailPorto);

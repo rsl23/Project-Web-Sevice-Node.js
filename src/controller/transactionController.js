@@ -52,7 +52,7 @@ const topup = (req, res) => {
         return res.status(404).json({ message: "User tidak ditemukan" });
       }
 
-      if (!topup) {
+      if (!topup || topup <= 0) {
         return res
           .status(400)
           .json({ message: "Masukkan jumlah topup yang valid" });
@@ -169,24 +169,32 @@ const convertAll = async (req, res) => {
 const BuySubscription = async (req, res) => {
   const user = req.user;
   try {
-    if (user.subscription === "Premium") {
+    const cekUser = await User.findOne({
+      where: { id_user: user.id_user }, 
+    });
+    if (cekUser.subscription === "Pro") {
       return res
         .status(400)
-        .json({ message: "Kamu sudah berlangganan Premium!" });
+        .json({ message: "Kamu sudah berlangganan Pro!" });
     } else {
-      if (user.saldo < 99000) {
+      if (cekUser.saldo < 99000) {
         return res
           .status(400)
           .json({ message: "Saldo tidak cukup untuk berlangganan" });
       } else {
-        const updatedUser = await User.update({
-          subscription: "Premium",
-          saldo: user.saldo - 99000,
-        });
+        const updatedUser = await User.update(
+          {
+            subscription: "Pro",
+            saldo: user.saldo - 99000,
+          },
+          {
+            where: { id_user: user.id_user }, // <-- tambahkan ini
+          }
+        );
 
         return res
           .status(200)
-          .json({ message: "Berhasil berlangganan Premium" });
+          .json({ message: "Berhasil berlangganan Pro" });
       }
     }
   } catch (err) {

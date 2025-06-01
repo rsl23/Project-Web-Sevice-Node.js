@@ -104,7 +104,7 @@ const profile = async (req, res) => {
     const profile = {
       username: user.username,
       name: user.name,
-      total_porto: user.saldo,
+      total_saldo: user.saldo,
     };
 
     return res.status(200).json({ Profile: profile });
