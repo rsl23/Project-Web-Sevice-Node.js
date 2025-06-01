@@ -3,9 +3,10 @@ const { watchlist, asset, Portofolio } = db;
 
 const addToWatchlist = async (req, res) => {
     try {
-        const { id_user } = req.user;
+        const user = req.user;
         const { id_asset } = req.body;
 
+        const id_user = user.id_user; 
         if (!id_asset) {
             return res.status(400).json({ message: "id_asset wajib diisi" });
         }

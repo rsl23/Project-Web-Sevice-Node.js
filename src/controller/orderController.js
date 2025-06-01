@@ -36,7 +36,7 @@ const buyMarket = async (req, res) => {
         where: { id_user, id_asset: normalizedIdAsset },
       });
 
-      if (!existingAsset && userAssetCount >= user.asset_slot) {
+      if (!existingAsset && (userAssetCount >= user.asset_slot && user.asset_slot !== -1)) {
         return res.status(400).json({
           message: `Subscription Free hanya bisa memiliki ${user.asset_slot} jenis aset. Upgrade ke Pro untuk slot tidak terbatas.`,
         });
@@ -223,7 +223,7 @@ const buyLimit = async (req, res) => {
       });
 
       // Jika user belum punya aset ini dan jumlah aset sudah mencapai limit
-      if (!existingAsset && userAssetCount >= user.asset_slot) {
+      if (!existingAsset && (userAssetCount >= user.asset_slot && user.asset_slot !== -1)) {
         return res.status(400).json({
           message: `Subscription Free hanya bisa memiliki ${user.asset_slot} jenis aset. Upgrade ke Pro untuk slot tidak terbatas.`,
         });

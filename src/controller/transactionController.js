@@ -185,10 +185,11 @@ const BuySubscription = async (req, res) => {
         const updatedUser = await User.update(
           {
             subscription: "Pro",
-            saldo: user.saldo - 99000,
+            asset_slot:-1,
+            saldo: cekUser.saldo - 99000,
           },
           {
-            where: { id_user: user.id_user }, // <-- tambahkan ini
+            where: { id_user: user.id_user }, 
           }
         );
 

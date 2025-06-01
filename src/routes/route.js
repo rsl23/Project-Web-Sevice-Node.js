@@ -77,18 +77,20 @@ router.post("/subscribe", verifyToken, BuySubscription); //beli subscription
 //============================================ PORTO ===================================
 router.get("/portofolio/getAll", verifyToken, fetchPorto);
 router.get("/portofolio/getDetailPorto", verifyToken, detailPorto);
+
 //============================================Market Price===================================
 router.get("/prices", price); //dapetin coin + price + marketcap dll
-router.get("/prices/:coin", coinPrice); //harga coin tertentu
-router.get("market/trending", marketTrending); //dapetin market trending
+router.get("/prices/:coinId", coinPrice); //harga coin tertentu
+router.get("/market/trending", marketTrending); //dapetin market trending //belum bisa
 
 //======================================== ASSET ============================================
 router.get("/assets", verifyAdmin, getAssets); //menampilkan semua asset yang ada di database + axios
 router.post("/assets", verifyAdmin, newAssets); //nambah asset ke database bisa dari axios atau buat sendiri
 router.put("/assets/:id", verifyAdmin, updateAssets); //update asset yang ada di database
 router.delete("/assets/:id", verifyAdmin, deleteAssets); //delete suatu asset
-router.get("/assets/fetchAsset", verifyAdmin, syncAssets);
+router.get("/assets/fetchAsset", verifyAdmin, syncAssets); // masukkin asset ke database dari API CoinGecko
 
+//belum ta buat documentasi bawah ini
 //======================================= MARKET ORDER & MARKET LIMIT ========================
 router.post("/order/buyMarket", verifyToken, buyMarket); //beli dengan harga terbaik di market - sellLimit
 router.post("/order/buyLimit", verifyToken, buyLimit); //beli dengan pasang harga beli - sellMarket
@@ -101,6 +103,7 @@ router.delete("/order/cancel-market/:order_id", verifyToken, cancelLimitOrder);
 router.post("/addwatchlist", verifyToken, addToWatchlist);
 router.get("/getwatchlist", verifyToken, getWatchlist);
 router.delete("/removewatchlist", verifyToken, softDeleteWatchlist);
+
 
 //==========================================ADMIN=============================================
 router.post("/registeradmin", registerAdmin);

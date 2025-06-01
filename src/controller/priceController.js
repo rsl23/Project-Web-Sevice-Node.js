@@ -46,10 +46,10 @@ const price = async (req, res) => {
 
 
 const coinPrice = async (req, res) => {
-    const coinId = req.query.coinId;
+    const coinId = req.params.coinId;
 
     if (!coinId) {
-        return res.status(400).json({ error: "coinId query parameter is required" });
+        return res.status(400).json({ error: "coinId parameter is required" });
     }
 
     try {
@@ -81,7 +81,8 @@ const marketTrending = async (req, res) => {
                 name: coinData.name,
                 symbol: coinData.symbol,
                 market_cap_rank: coinData.market_cap_rank,
-                score: coinData.score
+                score: coinData.score,
+                price: coinData.data?.price,
             };
         });
 
