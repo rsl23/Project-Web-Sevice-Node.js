@@ -71,9 +71,6 @@ router.get("/convert", verifyToken, getConvert);
 router.post("/convert-all", verifyToken, convertAll);
 router.post("/subscribe", verifyToken, BuySubscription); //beli subscription
 
-
-
-//belum ta buat documentasi bawah ini
 //============================================ PORTO ===================================
 router.get("/portofolio/getAll", verifyToken, fetchPorto);
 router.get("/portofolio/getDetailPorto", verifyToken, detailPorto);
@@ -90,11 +87,11 @@ router.put("/assets/:id", verifyAdmin, updateAssets); //update asset yang ada di
 router.delete("/assets/:id", verifyAdmin, deleteAssets); //delete suatu asset
 router.get("/assets/fetchAsset", verifyAdmin, syncAssets); // masukkin asset ke database dari API CoinGecko
 
-//belum ta buat documentasi bawah ini
+
 //======================================= MARKET ORDER & MARKET LIMIT ========================
-router.post("/order/buyMarket", verifyToken, buyMarket); //beli dengan harga terbaik di market - sellLimit
+router.post("/order/buyMarket", verifyToken, buyMarket); //beli dengan harga terbaik di market - sellLimit // belum
 router.post("/order/buyLimit", verifyToken, buyLimit); //beli dengan pasang harga beli - sellMarket
-router.post("/order/sellMarket", verifyToken, sellMarket); //jual dengan harga terbaik di market - buyLimit
+router.post("/order/sellMarket", verifyToken, sellMarket); //jual dengan harga terbaik di market - buyLimit //belum
 router.post("/order/sellLimit", verifyToken, sellLimit); //jual dengan pasang harga jual - butMarket
 router.get("/order/getHistory", verifyToken, getOrderHistory);
 router.delete("/order/cancel-market/:order_id", verifyToken, cancelLimitOrder);

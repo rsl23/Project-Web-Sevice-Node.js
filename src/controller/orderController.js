@@ -493,8 +493,8 @@ const sellLimit = async (req, res) => {
 
 const getOrderHistory = async (req, res) => {
   try {
-    const { id_user } = req.user;
-
+    const user = req.user;
+    const id_user = user.id_user;
     const historyOrders = await Order.findAll({
       where: {
         user_id: id_user,

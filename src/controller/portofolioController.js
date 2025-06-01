@@ -8,7 +8,8 @@ const { asset } = db;
 
 const fetchPorto = async (req, res) => {
   try {
-    const { username } = req.user;
+    const user = req.user;
+    const username = user.username;
     const acc = await User.findOne({ where: { username } });
     const porto = await Portofolio.findAll({ where: { id_user: acc.id_user } });
 
