@@ -43,8 +43,7 @@ module.exports = {
       },
     });
   },
-
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("assets");
+    await queryInterface.dropTable("asset");
   },
 };

@@ -51,9 +51,13 @@ module.exports = {
         type: Sequelize.ENUM("open", "partial", "filled", "cancelled"),
         defaultValue: "open",
       },
-      created_at: {
+      createdAt: {
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+        allowNull: false,
+      },
+      updatedAt: {
+        type: Sequelize.DATE,
+        allowNull: false,
       },
     });
   },
