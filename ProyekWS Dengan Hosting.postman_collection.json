@@ -1,0 +1,3519 @@
+{
+	"info": {
+		"_postman_id": "1df91dc3-f6dd-4dbe-b66e-e6c341744311",
+		"name": "ProyekWS Dengan Hosting",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "44286067",
+		"_collection_link": "https://rouls-2820186.postman.co/workspace/Rouls's-Workspace~e69bb63b-8bf6-41f3-85bb-c79a9ed58ab9/collection/44286067-1df91dc3-f6dd-4dbe-b66e-e6c341744311?action=share&source=collection_link&creator=44286067"
+	},
+	"item": [
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Register Admin",
+					"item": [
+						{
+							"name": "registerAdmin_berhasil",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0NzU3NjYwMSwiZXhwIjoxNzQ3NjYzMDAxfQ.Oy6Z5tQUCDi8voIkRZV7GqX0eNYOhyQcgSudZW33Lng",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "username",
+											"value": "raoulAdminTesBAseURL",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "12345",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/registeradmin",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"registeradmin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "registerAdmin_gagal (username sudah digunakan)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0NzU3NjYwMSwiZXhwIjoxNzQ3NjYzMDAxfQ.Oy6Z5tQUCDi8voIkRZV7GqX0eNYOhyQcgSudZW33Lng",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "username",
+											"value": "rafael",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "12345",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/registeradmin",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"registeradmin"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Login Admin",
+					"item": [
+						{
+							"name": "loginAdmin_berhasil",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0NzU3NjYwMSwiZXhwIjoxNzQ3NjYzMDAxfQ.Oy6Z5tQUCDi8voIkRZV7GqX0eNYOhyQcgSudZW33Lng",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "username",
+											"value": "rafael",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "12345",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/loginadmin",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"loginadmin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "loginAdmin_gagal (admin tidak ditemukan)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0NzU3NjYwMSwiZXhwIjoxNzQ3NjYzMDAxfQ.Oy6Z5tQUCDi8voIkRZV7GqX0eNYOhyQcgSudZW33Lng",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "username",
+											"value": "rafael",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "12345",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/loginadmin",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"loginadmin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "loginAdmin_gagal (password salah)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0NzU3NjYwMSwiZXhwIjoxNzQ3NjYzMDAxfQ.Oy6Z5tQUCDi8voIkRZV7GqX0eNYOhyQcgSudZW33Lng",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "username",
+											"value": "rafael",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "12345",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/loginadmin",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"loginadmin"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Managemen Asset",
+			"item": [
+				{
+					"name": "Get All Assets",
+					"item": [
+						{
+							"name": "getAllAsset_berhasil",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "extraits",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "price",
+											"value": "10000",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "description",
+											"value": "coin dummy",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "symbol",
+											"value": "ext",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/assets",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"assets"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "New Assets",
+					"item": [
+						{
+							"name": "postNewAsset_berhasil",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF9hZG1pbiI6MSwidXNlcm5hbWUiOiJyYWZhZWwiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NDg3NzMwNzUsImV4cCI6MTc0ODg1OTQ3NX0.yKqB1feerXsLzOIWecotSLk-1UkMIcFcrTt-eoY8AZg",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id_asset",
+											"value": "ext",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "extrait",
+											"type": "text"
+										},
+										{
+											"key": "price",
+											"value": "10000",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "coin dummy",
+											"type": "text"
+										},
+										{
+											"key": "symbol",
+											"value": "ext",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/assets",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"assets"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "postNewAsset_gagal (asset sudah ada)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF9hZG1pbiI6MSwidXNlcm5hbWUiOiJyYWZhZWwiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NDg3NzMwNzUsImV4cCI6MTc0ODg1OTQ3NX0.yKqB1feerXsLzOIWecotSLk-1UkMIcFcrTt-eoY8AZg",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id_asset",
+											"value": "ext",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "extrait",
+											"type": "text"
+										},
+										{
+											"key": "price",
+											"value": "10000",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "coin dummy",
+											"type": "text"
+										},
+										{
+											"key": "symbol",
+											"value": "ext",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/assets",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"assets"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "postNewAsset_gagal (field tidak lengkap)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF9hZG1pbiI6MSwidXNlcm5hbWUiOiJyYWZhZWwiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NDg3NzMwNzUsImV4cCI6MTc0ODg1OTQ3NX0.yKqB1feerXsLzOIWecotSLk-1UkMIcFcrTt-eoY8AZg",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id_asset",
+											"value": "ext",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "extrait",
+											"type": "text"
+										},
+										{
+											"key": "price",
+											"value": "10000",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "coin dummy",
+											"type": "text"
+										},
+										{
+											"key": "symbol",
+											"value": "ext",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/assets",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"assets"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Update Assets",
+					"item": [
+						{
+							"name": "updateAsset_berhasil",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF9hZG1pbiI6MSwidXNlcm5hbWUiOiJyYWZhZWwiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NDg3NzMwNzUsImV4cCI6MTc0ODg1OTQ3NX0.yKqB1feerXsLzOIWecotSLk-1UkMIcFcrTt-eoY8AZg",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "extraitsff",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "price",
+											"value": "12000",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "coin dummy",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "symbol",
+											"value": "ext",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/assets/ext",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"assets",
+										"ext"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateAsset_gagal (asset tidak ditemukan)",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF9hZG1pbiI6MSwidXNlcm5hbWUiOiJyYWZhZWwiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NDg3NzMwNzUsImV4cCI6MTc0ODg1OTQ3NX0.yKqB1feerXsLzOIWecotSLk-1UkMIcFcrTt-eoY8AZg",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "extraitsff",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "price",
+											"value": "12000",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "coin dummy",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "symbol",
+											"value": "ext",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/assets/ext",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"assets",
+										"ext"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Delete Assets",
+					"item": [
+						{
+							"name": "deleteAsset_berhasil",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF9hZG1pbiI6MSwidXNlcm5hbWUiOiJyYWZhZWwiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NDg3NzMwNzUsImV4cCI6MTc0ODg1OTQ3NX0.yKqB1feerXsLzOIWecotSLk-1UkMIcFcrTt-eoY8AZg",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/assets/ext",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"assets",
+										"ext"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteAsset_gagal (asset sudah dihapus)",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF9hZG1pbiI6MSwidXNlcm5hbWUiOiJyYWZhZWwiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NDg3NzMwNzUsImV4cCI6MTc0ODg1OTQ3NX0.yKqB1feerXsLzOIWecotSLk-1UkMIcFcrTt-eoY8AZg",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/assets/ext",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"assets",
+										"ext"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteAsset_gagal (asset tidak ditemukan)",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "extraits",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "price",
+											"value": "10000",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "description",
+											"value": "coin dummy",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "symbol",
+											"value": "ext",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/assets/extsdsf",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"assets",
+										"extsdsf"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Sync Assets",
+					"item": [
+						{
+							"name": "fetchAllAsset_berhasil",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0NzUwNjc0OSwiZXhwIjoxNzQ3NTkzMTQ5fQ.bZKGzaJNQpc7d6bZXV-D4zJwGWeDRzoqlcaoA0-sAvY",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/assets/fetchAsset",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"assets",
+										"fetchAsset"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Register",
+					"item": [
+						{
+							"name": "Register_berhasil",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "username",
+											"value": "Rafael",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "Rafael_168",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "L",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "rafael@gmail.com",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/auth/register",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register_gagal (username sudah terdaftar)",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "username",
+											"value": "Rafael",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "Rafael_168",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "L",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "rafael@gmail.com",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/auth/register",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register_gagal (Email sudah terdaftar)",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "username",
+											"value": "Rafael",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "Rafael_168",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "L",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "rafael@gmail.com",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/auth/register",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Login",
+					"item": [
+						{
+							"name": "Login_berhasil",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "username",
+											"value": "Rafael",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "Rafael_168",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/auth/login",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login_berhasil Copy",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "username",
+											"value": "Rafael",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "Rafael_168",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/auth/login",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login_gagal (password salah)",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "username",
+											"value": "Rafael",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "Rafael_168q",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/auth/login",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login_gagal (user tidak ditemukan)",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "username",
+											"value": "raoul",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "Rafael_168",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/auth/login",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Profile",
+					"item": [
+						{
+							"name": "profile_berhasil",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc1MDQwNSwiZXhwIjoxNzQ4ODM2ODA1fQ.WgCwpDp95jQzjfp3th0VhOA70xhg6ZI811HOD4pcQHQ",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/auth/me",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"auth",
+										"me"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "profile_gagal (token tidak valid)",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc1MDQwNSwiZXhwIjoxNzQ4ODM2ODA1fQ.WgCwpDp95jQzjfp3th0VhOA70xhg6ZI811HOD4pcQHQ",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "username",
+											"value": "Rafael",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "Rafael_168",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "L",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "rafael@gmail.com",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/auth/me",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"auth",
+										"me"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Request Password Reset",
+					"item": [
+						{
+							"name": "requestChangePassword_berhasil",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "email",
+											"value": "rafael@gmail.com",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/auth/request_verification",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"auth",
+										"request_verification"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "requestChangePassword_gagal (Email tidak ditemukan)",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "email",
+											"value": "rafael@gmail.com",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/auth/request_verification",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"auth",
+										"request_verification"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Update Password",
+					"item": [
+						{
+							"name": "updatePassword_berhasil",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhZmFlbEBnbWFpbC5jb20iLCJpYXQiOjE3NDg3NTA1NzAsImV4cCI6MTc0ODc1NDE3MH0.ha4aLIml_qWphq8vQevViJT1tnww_rb207j4gYDvlqI",
+											"type": "text"
+										},
+										{
+											"key": "newPassword",
+											"value": "iniPasswordBaru11.",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/auth/reset_password",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"auth",
+										"reset_password"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updatePassword_gagal (password kosong)",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhZmFlbEBnbWFpbC5jb20iLCJpYXQiOjE3NDg3NTA1NzAsImV4cCI6MTc0ODc1NDE3MH0.ha4aLIml_qWphq8vQevViJT1tnww_rb207j4gYDvlqI",
+											"type": "text"
+										},
+										{
+											"key": "newPassword",
+											"value": "",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/auth/reset_password",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"auth",
+										"reset_password"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updatePassword_gagal (password tidak 8 karakter)",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhZmFlbEBnbWFpbC5jb20iLCJpYXQiOjE3NDg3NTA1NzAsImV4cCI6MTc0ODc1NDE3MH0.ha4aLIml_qWphq8vQevViJT1tnww_rb207j4gYDvlqI",
+											"type": "text"
+										},
+										{
+											"key": "newPassword",
+											"value": "iniPa",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/auth/reset_password",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"auth",
+										"reset_password"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updatePassword_gagal (password lebih 30 karakter)",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhZmFlbEBnbWFpbC5jb20iLCJpYXQiOjE3NDg3NTA1NzAsImV4cCI6MTc0ODc1NDE3MH0.ha4aLIml_qWphq8vQevViJT1tnww_rb207j4gYDvlqI",
+											"type": "text"
+										},
+										{
+											"key": "newPassword",
+											"value": "iniPadfsddsfdfdfdfdsfsdfsdfsdfsdfsdfdsfsdfdsfsdfsdfsdfsdfdsfsdfsdfsfsfdsdf",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/auth/reset_password",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"auth",
+										"reset_password"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updatePassword_gagal (password tidak sesuai ketentuan)",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhZmFlbEBnbWFpbC5jb20iLCJpYXQiOjE3NDg3NTA1NzAsImV4cCI6MTc0ODc1NDE3MH0.ha4aLIml_qWphq8vQevViJT1tnww_rb207j4gYDvlqI",
+											"type": "text"
+										},
+										{
+											"key": "newPassword",
+											"value": "iniPadfsdf1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/auth/reset_password",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"auth",
+										"reset_password"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Portofolio",
+			"item": [
+				{
+					"name": "Get All Portofolio",
+					"item": [
+						{
+							"name": "getAllPortfolio_berhasil",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc1MDQwNSwiZXhwIjoxNzQ4ODM2ODA1fQ.WgCwpDp95jQzjfp3th0VhOA70xhg6ZI811HOD4pcQHQ",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "extraits",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "price",
+											"value": "10000",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "description",
+											"value": "coin dummy",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "symbol",
+											"value": "ext",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/portofolio/getAll",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"portofolio",
+										"getAll"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAllPortfolio_cobaHosting",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc1MDQwNSwiZXhwIjoxNzQ4ODM2ODA1fQ.WgCwpDp95jQzjfp3th0VhOA70xhg6ZI811HOD4pcQHQ",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "extraits",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "price",
+											"value": "10000",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "description",
+											"value": "coin dummy",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "symbol",
+											"value": "ext",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "https://project-cuan.glitch.me/cuan/portofolio/getAll",
+									"protocol": "https",
+									"host": [
+										"project-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"portofolio",
+										"getAll"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get Detail Coin Portofolio",
+					"item": [
+						{
+							"name": "getDetailPorto_berhasil",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc3NTc1MSwiZXhwIjoxNzQ4ODYyMTUxfQ.yE6qdQETEPzTS4tJStUpDe15yTukM5xvn4REuaJ8y2A",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/portofolio/getDetailPorto?id=bitcoin",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"portofolio",
+										"getDetailPorto"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "bitcoin"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getDetailPorto_gagal (parameter tidak lengkap)",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc3NTc1MSwiZXhwIjoxNzQ4ODYyMTUxfQ.yE6qdQETEPzTS4tJStUpDe15yTukM5xvn4REuaJ8y2A",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/portofolio/getDetailPorto?id=",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"portofolio",
+										"getDetailPorto"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getDetailPorto_gagal (asset tidak ditemukan)",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc3NTc1MSwiZXhwIjoxNzQ4ODYyMTUxfQ.yE6qdQETEPzTS4tJStUpDe15yTukM5xvn4REuaJ8y2A",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/portofolio/getDetailPorto?id=ethereum",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"portofolio",
+										"getDetailPorto"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "ethereum"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Harga",
+			"item": [
+				{
+					"name": "Prices",
+					"item": [
+						{
+							"name": "prices_berhasil",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/prices",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"prices"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Coin Prices",
+					"item": [
+						{
+							"name": "pricesSuatuCoin_berhasil",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/price/bitcoin",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"price",
+										"bitcoin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "pricesSuatuCoin_gagal (parameter tidak valid)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/price/isttsCoin",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"price",
+										"isttsCoin"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Market Trending (tidak bisa)",
+					"item": [
+						{
+							"name": "(tidak bisa)marketTrending_berhasil",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/market/trending",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"market",
+										"trending"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "WatchList",
+			"item": [
+				{
+					"name": "Add Watchlist",
+					"item": [
+						{
+							"name": "addWatchlist_berhasil",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc3NTc1MSwiZXhwIjoxNzQ4ODYyMTUxfQ.yE6qdQETEPzTS4tJStUpDe15yTukM5xvn4REuaJ8y2A",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id_asset",
+											"value": "bitcoin",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/addwatchlist",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"addwatchlist"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "addWatchlist_gagal (asset sudah ada di watchlist)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc3NTc1MSwiZXhwIjoxNzQ4ODYyMTUxfQ.yE6qdQETEPzTS4tJStUpDe15yTukM5xvn4REuaJ8y2A",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id_asset",
+											"value": "bitcoin",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/addwatchlist",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"addwatchlist"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "addWatchlist_gagal (asset tidak ditemukan)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc3NTc1MSwiZXhwIjoxNzQ4ODYyMTUxfQ.yE6qdQETEPzTS4tJStUpDe15yTukM5xvn4REuaJ8y2A",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id_asset",
+											"value": "bitcoinsfsada",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/addwatchlist",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"addwatchlist"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "addWatchlist_gagal (field tidak diisi)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc3NTc1MSwiZXhwIjoxNzQ4ODYyMTUxfQ.yE6qdQETEPzTS4tJStUpDe15yTukM5xvn4REuaJ8y2A",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id_asset",
+											"value": "",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/addwatchlist",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"addwatchlist"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get watchlist",
+					"item": [
+						{
+							"name": "getWatchlist_berhasil",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjgsImlhdCI6MTc0ODk2NTM1MSwiZXhwIjoxNzQ5MDUxNzUxfQ.t9Kph8CVbSmHeDo4DvpOmoWlQDjxPJ8-C-gN6BXxg5g",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id_asset",
+											"value": "bitcoin",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/getwatchlist",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"getwatchlist"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Delete Watchlist",
+					"item": [
+						{
+							"name": "removeWatchlist_berhasil",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc3NTc1MSwiZXhwIjoxNzQ4ODYyMTUxfQ.yE6qdQETEPzTS4tJStUpDe15yTukM5xvn4REuaJ8y2A",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id_asset",
+											"value": "bitcoin",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/removewatchlist",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"removewatchlist"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "removeWatchlist_gagal (field kosong)",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc3NTc1MSwiZXhwIjoxNzQ4ODYyMTUxfQ.yE6qdQETEPzTS4tJStUpDe15yTukM5xvn4REuaJ8y2A",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id_asset",
+											"value": "",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/removewatchlist",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"removewatchlist"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "removeWatchlist_gagal (watchlist ditak ditemukan)",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc3NTc1MSwiZXhwIjoxNzQ4ODYyMTUxfQ.yE6qdQETEPzTS4tJStUpDe15yTukM5xvn4REuaJ8y2A",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id_asset",
+											"value": "",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/removewatchlist",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"removewatchlist"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Buy And Sell",
+			"item": [
+				{
+					"name": "Buy limit",
+					"item": [
+						{
+							"name": "buyLimit_berhasil",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc3NTc1MSwiZXhwIjoxNzQ4ODYyMTUxfQ.yE6qdQETEPzTS4tJStUpDe15yTukM5xvn4REuaJ8y2A",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id_asset",
+											"value": "aave",
+											"type": "text"
+										},
+										{
+											"key": "price",
+											"value": "1000",
+											"type": "text"
+										},
+										{
+											"key": "total",
+											"value": "10000",
+											"type": "text"
+										},
+										{
+											"key": "amount",
+											"value": "",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/order/buyLimit",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"order",
+										"buyLimit"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "buyLimit_gagal (parameter tidak lengkap)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc3NTc1MSwiZXhwIjoxNzQ4ODYyMTUxfQ.yE6qdQETEPzTS4tJStUpDe15yTukM5xvn4REuaJ8y2A",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id_asset",
+											"value": "ext",
+											"type": "text"
+										},
+										{
+											"key": "price",
+											"value": "1000",
+											"type": "text"
+										},
+										{
+											"key": "total",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "amount",
+											"value": "",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/order/buyLimit",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"order",
+										"buyLimit"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "buyLimit_gagal (asset tidak ada)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc3NTc1MSwiZXhwIjoxNzQ4ODYyMTUxfQ.yE6qdQETEPzTS4tJStUpDe15yTukM5xvn4REuaJ8y2A",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id_asset",
+											"value": "manta",
+											"type": "text"
+										},
+										{
+											"key": "price",
+											"value": "1000",
+											"type": "text"
+										},
+										{
+											"key": "total",
+											"value": "222",
+											"type": "text"
+										},
+										{
+											"key": "amount",
+											"value": "",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/order/buyLimit",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"order",
+										"buyLimit"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "buyLimit_gagal (slot penuh (kalau free))",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc3NTc1MSwiZXhwIjoxNzQ4ODYyMTUxfQ.yE6qdQETEPzTS4tJStUpDe15yTukM5xvn4REuaJ8y2A",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id_asset",
+											"value": "dai",
+											"type": "text"
+										},
+										{
+											"key": "price",
+											"value": "1000",
+											"type": "text"
+										},
+										{
+											"key": "total",
+											"value": "222",
+											"type": "text"
+										},
+										{
+											"key": "amount",
+											"value": "",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/order/buyLimit",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"order",
+										"buyLimit"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Buy market",
+					"item": [
+						{
+							"name": "buyMarket (Berhasil)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc3NTc1MSwiZXhwIjoxNzQ4ODYyMTUxfQ.yE6qdQETEPzTS4tJStUpDe15yTukM5xvn4REuaJ8y2A",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id_asset",
+											"value": "bitcoin",
+											"type": "text"
+										},
+										{
+											"key": "total",
+											"value": "20000",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/order/buyMarket",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"order",
+										"buyMarket"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "buyMarket (Tidak ada penjualan)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc3NTc1MSwiZXhwIjoxNzQ4ODYyMTUxfQ.yE6qdQETEPzTS4tJStUpDe15yTukM5xvn4REuaJ8y2A",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id_asset",
+											"value": "bitcoin",
+											"type": "text"
+										},
+										{
+											"key": "total",
+											"value": "20000",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/order/buyMarket",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"order",
+										"buyMarket"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "buyMarket (Saldo Tidak Cukup)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc3NTc1MSwiZXhwIjoxNzQ4ODYyMTUxfQ.yE6qdQETEPzTS4tJStUpDe15yTukM5xvn4REuaJ8y2A",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id_asset",
+											"value": "bitcoin",
+											"type": "text"
+										},
+										{
+											"key": "total",
+											"value": "20000",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/order/buyMarket",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"order",
+										"buyMarket"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Sell Limit",
+					"item": [
+						{
+							"name": "sellLimit_berhasil",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc3NTc1MSwiZXhwIjoxNzQ4ODYyMTUxfQ.yE6qdQETEPzTS4tJStUpDe15yTukM5xvn4REuaJ8y2A",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id_asset",
+											"value": "bitcoin",
+											"type": "text"
+										},
+										{
+											"key": "price",
+											"value": "100000",
+											"type": "text"
+										},
+										{
+											"key": "total",
+											"value": "25",
+											"type": "text"
+										},
+										{
+											"key": "amount",
+											"value": "",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/order/sellLimit",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"order",
+										"sellLimit"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "sellLimit_gagal (data tidak lengkap)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc3NTc1MSwiZXhwIjoxNzQ4ODYyMTUxfQ.yE6qdQETEPzTS4tJStUpDe15yTukM5xvn4REuaJ8y2A",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id_asset",
+											"value": "bitcoin",
+											"type": "text"
+										},
+										{
+											"key": "price",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "total",
+											"value": "25",
+											"type": "text"
+										},
+										{
+											"key": "amount",
+											"value": "",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/order/sellLimit",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"order",
+										"sellLimit"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "sellLimit_gagal (jumlah koin tidak cukup)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc3NTc1MSwiZXhwIjoxNzQ4ODYyMTUxfQ.yE6qdQETEPzTS4tJStUpDe15yTukM5xvn4REuaJ8y2A",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id_asset",
+											"value": "bitcoin",
+											"type": "text"
+										},
+										{
+											"key": "price",
+											"value": "100000",
+											"type": "text"
+										},
+										{
+											"key": "total",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "amount",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/order/sellLimit",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"order",
+										"sellLimit"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Sell Market",
+					"item": [
+						{
+							"name": "sellMarket (Berhasil)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0NzUwNjc0OSwiZXhwIjoxNzQ3NTkzMTQ5fQ.bZKGzaJNQpc7d6bZXV-D4zJwGWeDRzoqlcaoA0-sAvY",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id_asset",
+											"value": "aave",
+											"type": "text"
+										},
+										{
+											"key": "amount",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/order/sellMarket",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"order",
+										"sellMarket"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "sellMarket (TIdak ada yang beli)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0NzUwNjc0OSwiZXhwIjoxNzQ3NTkzMTQ5fQ.bZKGzaJNQpc7d6bZXV-D4zJwGWeDRzoqlcaoA0-sAvY",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id_asset",
+											"value": "aaves",
+											"type": "text"
+										},
+										{
+											"key": "amount",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/order/sellMarket",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"order",
+										"sellMarket"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "sellMarket (Validation Input)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0NzUwNjc0OSwiZXhwIjoxNzQ3NTkzMTQ5fQ.bZKGzaJNQpc7d6bZXV-D4zJwGWeDRzoqlcaoA0-sAvY",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id_asset",
+											"value": "aave",
+											"type": "text"
+										},
+										{
+											"key": "amount",
+											"value": "-10",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/order/sellMarket",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"order",
+										"sellMarket"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "sellMarket (Total asset di portfolio tidak cukup)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0NzUwNjc0OSwiZXhwIjoxNzQ3NTkzMTQ5fQ.bZKGzaJNQpc7d6bZXV-D4zJwGWeDRzoqlcaoA0-sAvY",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id_asset",
+											"value": "aave",
+											"type": "text"
+										},
+										{
+											"key": "amount",
+											"value": "999999999",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/order/sellMarket",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"order",
+										"sellMarket"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get History",
+					"item": [
+						{
+							"name": "getHistory_berhasil",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0NzUwNjc0OSwiZXhwIjoxNzQ3NTkzMTQ5fQ.bZKGzaJNQpc7d6bZXV-D4zJwGWeDRzoqlcaoA0-sAvY",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/order/getHistory",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"order",
+										"getHistory"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Cancel Order",
+					"item": [
+						{
+							"name": "cancelOrder_berhasil",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc4Nzg4OSwiZXhwIjoxNzQ4ODc0Mjg5fQ.XWr3J1OhrQETCDMDvxGSPkE3mVP2kWwXSMXrSrK0H3s",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/order/cancel-market/10",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"order",
+										"cancel-market",
+										"10"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "cancelOrder_gagal (tidak ketemu)",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc4Nzg4OSwiZXhwIjoxNzQ4ODc0Mjg5fQ.XWr3J1OhrQETCDMDvxGSPkE3mVP2kWwXSMXrSrK0H3s",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/order/cancel-market/12",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"order",
+										"cancel-market",
+										"12"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Transaction",
+			"item": [
+				{
+					"name": "Topup",
+					"item": [
+						{
+							"name": "topUp_berhasil",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjgsImlhdCI6MTc0ODk2NTM1MSwiZXhwIjoxNzQ5MDUxNzUxfQ.t9Kph8CVbSmHeDo4DvpOmoWlQDjxPJ8-C-gN6BXxg5g",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "gambar",
+											"type": "file",
+											"src": "/C:/Users/raoul_3ze1nsx/OneDrive/Pictures/proyek PCD/0152.jpg_wh860.jpg"
+										},
+										{
+											"key": "topup",
+											"value": "1000",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/topup",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"topup"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "topUp_gagal (bukti transfer tidak ada)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc1MDQwNSwiZXhwIjoxNzQ4ODM2ODA1fQ.WgCwpDp95jQzjfp3th0VhOA70xhg6ZI811HOD4pcQHQ",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "gambar",
+											"type": "file",
+											"src": []
+										},
+										{
+											"key": "topup",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/topup",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"topup"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "topUp_gagal (jumlah topup tidak valid)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc1MDQwNSwiZXhwIjoxNzQ4ODM2ODA1fQ.WgCwpDp95jQzjfp3th0VhOA70xhg6ZI811HOD4pcQHQ",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "gambar",
+											"type": "file",
+											"src": "/C:/Users/raoul_3ze1nsx/OneDrive/Pictures/Screenshots/A.jpg"
+										},
+										{
+											"key": "topup",
+											"value": "-323",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/topup",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"topup"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "topUp_gagal (token login tidak valid)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc1MDQwNSwiZXhwIjoxNzQ4ODM2ODA1fQ.WgCwpDp95jQzjfp3th0VhOA70xhg6ZI811HOD4pcQHQ",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "gambar",
+											"type": "file",
+											"src": "/C:/Users/raoul_3ze1nsx/OneDrive/Pictures/Screenshots/A.jpg"
+										},
+										{
+											"key": "topup",
+											"value": "-323",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/topup",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"topup"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Convert",
+					"item": [
+						{
+							"name": "convert_berhasil",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc1MDQwNSwiZXhwIjoxNzQ4ODM2ODA1fQ.WgCwpDp95jQzjfp3th0VhOA70xhg6ZI811HOD4pcQHQ",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/convert?from=bitcoin&to=usd&amount=2",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"convert"
+									],
+									"query": [
+										{
+											"key": "from",
+											"value": "bitcoin"
+										},
+										{
+											"key": "to",
+											"value": "usd"
+										},
+										{
+											"key": "amount",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "convert_gagal (query tidak diisi)",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc1MDQwNSwiZXhwIjoxNzQ4ODM2ODA1fQ.WgCwpDp95jQzjfp3th0VhOA70xhg6ZI811HOD4pcQHQ",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/convert?from=bitcoin&to=&amount=2",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"convert"
+									],
+									"query": [
+										{
+											"key": "from",
+											"value": "bitcoin"
+										},
+										{
+											"key": "to",
+											"value": ""
+										},
+										{
+											"key": "amount",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "convert_gagal (kombinasi koin tidak ditemukan)",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc1MDQwNSwiZXhwIjoxNzQ4ODM2ODA1fQ.WgCwpDp95jQzjfp3th0VhOA70xhg6ZI811HOD4pcQHQ",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/convert?from=bitcoin&to=manta&amount=2",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"convert"
+									],
+									"query": [
+										{
+											"key": "from",
+											"value": "bitcoin"
+										},
+										{
+											"key": "to",
+											"value": "manta"
+										},
+										{
+											"key": "amount",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "convertAll",
+					"item": [
+						{
+							"name": "convertAll_berhasil",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc1MDQwNSwiZXhwIjoxNzQ4ODM2ODA1fQ.WgCwpDp95jQzjfp3th0VhOA70xhg6ZI811HOD4pcQHQ",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"target\": \"usd\",\r\n  \"coins\": [\r\n    { \"id\": \"bitcoin\", \"amount\": 0.1 },\r\n    { \"id\": \"ethereum\", \"amount\": 0.5 },\r\n    { \"id\": \"dogecoin\", \"amount\": 1000 }\r\n  ]\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/convert-all",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"convert-all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "convertAll_gagal (request tidak lengkap)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc1MDQwNSwiZXhwIjoxNzQ4ODM2ODA1fQ.WgCwpDp95jQzjfp3th0VhOA70xhg6ZI811HOD4pcQHQ",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"target\": \"usd\",\r\n  \"coins\": [\r\n    { \"id\": \"bitcoin\", \"amount\": 0.1 },\r\n    { \"id\": \"ethereum\", \"amount\": 0.5 },\r\n    { \"id\": \"dogecoin\", \"amount\": 1000 }\r\n  ]\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/convert-all",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"convert-all"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Subscription",
+					"item": [
+						{
+							"name": "subscriptionPro_berhasil",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc1MDQwNSwiZXhwIjoxNzQ4ODM2ODA1fQ.WgCwpDp95jQzjfp3th0VhOA70xhg6ZI811HOD4pcQHQ",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/subscribe",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"subscribe"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "subscriptionPro_gagal (sudah berlangganan)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc1MDQwNSwiZXhwIjoxNzQ4ODM2ODA1fQ.WgCwpDp95jQzjfp3th0VhOA70xhg6ZI811HOD4pcQHQ",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/subscribe",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"subscribe"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "subscriptionPro_gagal (saldo tidak cukup)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc1MDQwNSwiZXhwIjoxNzQ4ODM2ODA1fQ.WgCwpDp95jQzjfp3th0VhOA70xhg6ZI811HOD4pcQHQ",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "https://projectws-cuan.glitch.me/cuan/subscribe",
+									"protocol": "https",
+									"host": [
+										"projectws-cuan",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"cuan",
+										"subscribe"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Market Axios",
+			"item": [
+				{
+					"name": "detailCoinMarket_berhasil",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://projectws-cuan.glitch.me/cuan/market/mantle",
+							"protocol": "https",
+							"host": [
+								"projectws-cuan",
+								"glitch",
+								"me"
+							],
+							"path": [
+								"cuan",
+								"market",
+								"mantle"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listCoinMarket_berhasil Copy",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc1MDQwNSwiZXhwIjoxNzQ4ODM2ODA1fQ.WgCwpDp95jQzjfp3th0VhOA70xhg6ZI811HOD4pcQHQ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "Rafael",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Rafael_168",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "L",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "rafael@gmail.com",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://projectws-cuan.glitch.me/cuan/market",
+							"protocol": "https",
+							"host": [
+								"projectws-cuan",
+								"glitch",
+								"me"
+							],
+							"path": [
+								"cuan",
+								"market"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listCoinMarket_berhasil Copy",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhZmFlbCIsImlkX3VzZXIiOjYsImlhdCI6MTc0ODc1MDQwNSwiZXhwIjoxNzQ4ODM2ODA1fQ.WgCwpDp95jQzjfp3th0VhOA70xhg6ZI811HOD4pcQHQ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "Rafael",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Rafael_168",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "L",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "rafael@gmail.com",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://projectws-cuan.glitch.me/cuan/market",
+							"protocol": "https",
+							"host": [
+								"projectws-cuan",
+								"glitch",
+								"me"
+							],
+							"path": [
+								"cuan",
+								"market"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "tes baseurl dan hosting",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://projectws-cuan.glitch.me/",
+					"protocol": "https",
+					"host": [
+						"projectws-cuan",
+						"glitch",
+						"me"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
