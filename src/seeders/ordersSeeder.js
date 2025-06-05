@@ -9,7 +9,19 @@ module.exports = {
     return queryInterface.bulkInsert(
       "orders",
       [
-
+        {
+          user_id: 1,
+          id_asset: "bitcoin",
+          type: "market",
+          side: "buy",
+          price: 69840.5,
+          ammount: 0.01,
+          filled_amount: 0.01,
+          total: 698.405,
+          status: "filled",
+          createdAt: date1,
+          
+        },
       ],
       {}
     );
