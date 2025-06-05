@@ -18,6 +18,8 @@ const {
 const {
   fetchPorto,
   detailPorto,
+  profits,
+  loss,
 } = require("../controller/portofolioController");
 
 const {
@@ -74,6 +76,8 @@ router.post("/subscribe", verifyToken, BuySubscription); //beli subscription
 //============================================ PORTO ===================================
 router.get("/portofolio/getAll", verifyToken, fetchPorto);
 router.get("/portofolio/getDetailPorto", verifyToken, detailPorto);
+router.get("/portofolio/getProfits", verifyToken, profits);
+router.get("/portofolio/getLoss", verifyToken, loss);
 
 //============================================Market Price===================================
 router.get("/prices", price); //dapetin coin + price + marketcap dll

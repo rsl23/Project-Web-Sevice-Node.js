@@ -112,4 +112,72 @@ const detailPorto = async (req, res) => {
   }
 };
 
-module.exports = { fetchPorto, detailPorto };
+const loss = async (req, res) => {
+  try {
+    const { nama, harga_sekarang, target_harga } = req.query;
+
+      if (!nama || !harga_sekarang || !target_harga) {
+        return res.status(400).json({
+          error: 'Parameter nama, harga_sekarang, dan target_harga wajib diisi.',
+        });
+      }
+
+      const currentPrice = parseFloat(harga_sekarang);
+      const targetPrice = parseFloat(target_harga);
+
+      if (isNaN(currentPrice) || isNaN(targetPrice)) {
+        return res.status(400).json({
+          error: 'harga_sekarang dan target_harga harus berupa angka.',
+        });
+      }
+
+      const loss = targetPrice - currentPrice;
+      const status = loss > 0 ? 'Rugi' : loss < 0 ? 'Untung' : 'Impasse';
+
+      res.json({
+        crypto: nama,
+        harga_sekarang: currentPrice,
+        target_harga: targetPrice,
+        loss: loss > 0 ? loss : 0,
+        status: status,
+      });
+  } catch (error) {
+    return res.status(500).json({ message: err.message });
+  }
+}
+
+const profits = async (req, res) => {
+  try {
+    const { nama, harga_sekarang, target_harga } = req.query;
+
+    if (!nama || !harga_sekarang || !target_harga) {
+      return res.status(400).json({
+        error: 'Parameter nama, harga_sekarang, dan target_harga wajib diisi.',
+      });
+    }
+
+    const currentPrice = parseFloat(harga_sekarang);
+    const targetPrice = parseFloat(target_harga);
+
+    if (isNaN(currentPrice) || isNaN(targetPrice)) {
+      return res.status(400).json({
+        error: 'harga_sekarang dan target_harga harus berupa angka.',
+      });
+    }
+
+    const profit = currentPrice - targetPrice;
+    const status = profit > 0 ? 'Untung' : profit < 0 ? 'Rugi' : 'Impasse';
+
+    res.json({
+      crypto: nama,
+      harga_sekarang: currentPrice,
+      target_harga: targetPrice,
+      selisih: profit,
+      status: status,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: err.message });
+  }
+}
+
+module.exports = { fetchPorto, detailPorto, profits, loss };

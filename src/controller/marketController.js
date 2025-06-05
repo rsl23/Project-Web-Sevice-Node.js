@@ -29,7 +29,7 @@ const detailAsset = async (req, res) => {
     const { id } = req.params;
 
     const dbAsset = await asset.findByPk(id, {
-      attributes: ["id_asset", "name", "symbol", "description", "price"],
+      attributes: ["id_asset", "name", "symbol", "price"],
     });
 
     if (dbAsset && !dbAsset.is_deleted) {
@@ -58,7 +58,6 @@ const detailAsset = async (req, res) => {
       id_asset: temp.id,
       name: temp.name,
       symbol: temp.symbol,
-      description: temp.description?.en || null,
       price: `$${temp.market_data?.current_price?.usd || null}`,
     };
 
