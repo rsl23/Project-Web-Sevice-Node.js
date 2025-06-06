@@ -26,7 +26,7 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage: storage,
   limits: { fileSize: 5 * 1024 * 1024 },
-}).single("gambar");
+}).single("buktiTF");
 
 const topup = (req, res) => {
   upload(req, res, async (err) => {

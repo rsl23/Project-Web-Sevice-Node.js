@@ -163,7 +163,6 @@ const syncAssets = async (req, res) => {
                     name,
                     symbol,
                     price: current_price,
-                    description,
                     is_deleted: false,
                 });
 
