@@ -130,7 +130,7 @@ const convertAll = async (req, res) => {
   }
 
   const coinIds = coins.map((c) => c.id).join(",");
-
+  // bitcoin, ethereum
   try {
     const response = await axios.get(
       "https://api.coingecko.com/api/v3/simple/price",

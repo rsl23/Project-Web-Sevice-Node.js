@@ -18,7 +18,13 @@ const registerAdmin = async (req, res) => {
             password: hashedPassword
         });
 
-        return res.status(201).json({ message: 'Admin berhasil didaftarkan', admin: newAdmin });
+        const adminData = {
+            id: newAdmin.id_admin,
+            username: newAdmin.username,
+      
+        };
+
+        return res.status(201).json({ message: 'Admin berhasil didaftarkan', admin: adminData });
     } catch (err) {
         console.error(err);
         return res.status(500).json({ message: 'Terjadi kesalahan saat registrasi admin' });
