@@ -130,8 +130,8 @@ const syncAssets = async (req, res) => {
         let page = 1;
         let hasMore = true;
         let totalSynced = 0;
-
-        while (hasMore) {
+        let actualLimit = 10;
+        while (hasMore && totalSynced < actualLimit) {
             const marketRes = await axios.get("https://api.coingecko.com/api/v3/coins/markets", {
                 params: {
                     vs_currency: "usd",
@@ -149,13 +149,13 @@ const syncAssets = async (req, res) => {
                 const { id, name, symbol, current_price } = assetData;
 
                 // Ambil deskripsi dari endpoint detail
-                let description = null;
-                try {
-                    const detailRes = await axios.get(`https://api.coingecko.com/api/v3/coins/${id}?localization=false`);;
-                    description = detailRes.data?.description?.en || null;
-                } catch (err) {
-                    console.warn(`Gagal ambil deskripsi untuk ${id}:`, err.message);
-                }
+                // let description = null;
+                // try {
+                //     const detailRes = await axios.get(`https://api.coingecko.com/api/v3/coins/${id}?localization=false`);;
+                //     description = detailRes.data?.description?.en || null;
+                // } catch (err) {
+                //     console.warn(`Gagal ambil deskripsi untuk ${id}:`, err.message);
+                // }
 
                 // Upsert ke DB
                 await asset.upsert({

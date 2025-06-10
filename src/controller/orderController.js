@@ -23,8 +23,9 @@ const buyMarket = async (req, res) => {
       return res.status(400).json({ message: "Saldo tidak cukup" });
     }
 
-    const normalizedIdAsset = id_asset.toLowerCase();
+    const normalizedIdAsset = id_asset;
 
+    // Cek asset slot jika user subscription Free
     if (user.subscription === "Free") {
       const userAssetCount = await Portofolio.count({
         where: {
@@ -35,118 +36,56 @@ const buyMarket = async (req, res) => {
       const existingAsset = await Portofolio.findOne({
         where: { id_user, id_asset: normalizedIdAsset },
       });
-
-      if (!existingAsset && (userAssetCount >= user.asset_slot && user.asset_slot !== -1)) {
+      if (!existingAsset && userAssetCount >= user.asset_slot) {
         return res.status(400).json({
           message: `Subscription Free hanya bisa memiliki ${user.asset_slot} jenis aset. Upgrade ke Pro untuk slot tidak terbatas.`,
         });
       }
     }
 
-    let assetData = await asset.findOne({
-      where: { id_asset: normalizedIdAsset, is_deleted: false },
-    });
-    if (!assetData) {
-      return res
-        .status(404)
-        .json({ message: "Asset tidak ditemukan di database" });
-    }
-
-    const sellOrders = await Order.findAll({
-      where: {
-        id_asset: normalizedIdAsset,
-        type: "limit",
-        side: "sell",
-        status: { [Op.in]: ["open", "partial"] },
-        user_id: { [Op.ne]: id_user },
-      },
-      order: [
-        ["price", "ASC"],
-        ["created_at", "ASC"],
-      ],
-    });
-
-    if (!sellOrders.length) {
-      return res.status(404).json({
-        message: "Tidak ada sell order yang tersedia di market saat ini",
-      });
-    }
-
-    let remainingUSD = parseFloat(total);
-    let totalBought = 0;
-    let totalSpent = 0;
-    const priceDetails = [];
-
-    for (const sellOrder of sellOrders) {
-      if (remainingUSD <= 0) break;
-
-      const remainingSellAmount = sellOrder.amount - sellOrder.filled_amount;
-      const price = sellOrder.price;
-      const maxBuyableAtThisLevel = parseFloat(
-        (remainingUSD / price).toFixed(8)
-      );
-
-      const amountMatched = Math.min(
-        remainingSellAmount,
-        maxBuyableAtThisLevel
-      );
-      const cost = parseFloat((amountMatched * price).toFixed(2));
-
-      if (amountMatched <= 0) continue;
-
-      sellOrder.filled_amount += amountMatched;
-      sellOrder.status =
-        sellOrder.filled_amount >= sellOrder.amount ? "filled" : "partial";
-      await sellOrder.save();
-
-      const seller = await User.findOne({
-        where: { id_user: sellOrder.user_id },
-      });
-      if (seller) {
-        seller.saldo = (parseFloat(seller.saldo) || 0) + cost;
-        await seller.save();
+    // Ambil harga dari API eksternal (CoinGecko)
+    let price;
+    try {
+      const url = `https://api.coingecko.com/api/v3/coins/${normalizedIdAsset}`;
+      const options = {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          "x-cg-pro-api-key": `${process.env.API_KEY}`,
+        },
+      };
+      const response = await axios(url, options);
+      price = parseFloat(response.data.market_data?.current_price?.usd);
+      if (!price || isNaN(price)) {
+        return res.status(404).json({ message: "Harga asset tidak ditemukan di API" });
       }
-
-      const sellerPortfolio = await Portofolio.findOne({
-        where: { id_user: sellOrder.user_id, id_asset: normalizedIdAsset },
-      });
-
-      if (sellerPortfolio) {
-        sellerPortfolio.jumlah -= amountMatched;
-        if (sellerPortfolio.jumlah < 0) sellerPortfolio.jumlah = 0; // safety
-        await sellerPortfolio.save();
-      }
-
-      priceDetails.push({ price, amount: amountMatched });
-
-      totalBought += amountMatched;
-      totalSpent += cost;
-      remainingUSD -= cost;
+    } catch (err) {
+      return res.status(500).json({ message: "Gagal mengambil harga asset dari API" });
     }
 
-    if (totalBought === 0) {
+    // Hitung jumlah coin yang bisa dibeli
+    const amountToBuy = parseFloat((total / price).toFixed(8));
+    const sumPrice = parseFloat((amountToBuy * price).toFixed(2));
+
+    if (user.saldo < sumPrice) {
       return res.status(400).json({
-        message: "Tidak ada koin yang tersedia untuk dibeli di market saat ini",
+        message: "Saldo anda tidak mencukupi, silahkan topup terlebih dahulu",
       });
     }
 
-    if (parseFloat(user.saldo) < totalSpent) {
-      return res
-        .status(400)
-        .json({ message: "Saldo tidak cukup setelah proses matching order" });
-    }
-    user.saldo = parseFloat(user.saldo) - totalSpent;
+    user.saldo -= sumPrice;
     await user.save();
 
+    // Simpan order market buy (tanpa matching order book, langsung beli dari API)
     await Order.create({
       user_id: id_user,
       id_asset: normalizedIdAsset,
       side: "buy",
       type: "market",
-      price: priceDetails[0].price,
-      amount: totalBought,
-      total: totalSpent,
-      status: totalSpent < total ? "partial" : "filled",
+      price: price,
+      amount: amountToBuy,
+      total: sumPrice,
+      status: "filled",
     });
 
     let portfolio = await Portofolio.findOne({
@@ -157,37 +96,25 @@ const buyMarket = async (req, res) => {
       portfolio = await Portofolio.create({
         id_user,
         id_asset: normalizedIdAsset,
-        avg_price: totalSpent / totalBought,
-        jumlah: totalBought,
+        avg_price: price,
+        jumlah: amountToBuy,
       });
     } else {
       const oldTotalAmount = portfolio.jumlah || 0;
       const oldAvgPrice = portfolio.avg_price || 0;
-
-      const newTotalAmount = oldTotalAmount + totalBought;
+      const newTotalAmount = oldTotalAmount + amountToBuy;
       const newAvgPrice =
-        (oldAvgPrice * oldTotalAmount + totalSpent) / newTotalAmount;
-
+        (oldAvgPrice * oldTotalAmount + sumPrice) / newTotalAmount;
       portfolio.avg_price = newAvgPrice;
       portfolio.jumlah = newTotalAmount;
       await portfolio.save();
     }
 
-    assetData.price = priceDetails[0].price;
-    await assetData.save();
-
-    const message =
-      totalSpent < total
-        ? `Order partial: hanya berhasil membeli ${totalBought} ${normalizedIdAsset} senilai $${totalSpent}. Sisa saldo $${(
-            total - totalSpent
-          ).toFixed(2)} akan dikembalikan ke portfolio.`
-        : "Buy market berhasil";
-
     return res.status(200).json({
-      message,
-      amount_bought: totalBought,
-      total_spent: totalSpent,
-      details: priceDetails,
+      message: "Buy market berhasil dari API eksternal",
+      amount_bought: amountToBuy,
+      total_spent: sumPrice,
+      price: price,
     });
   } catch (err) {
     console.error("Error di buyMarket:", err);
@@ -223,7 +150,7 @@ const buyLimit = async (req, res) => {
       });
 
       // Jika user belum punya aset ini dan jumlah aset sudah mencapai limit
-      if (!existingAsset && (userAssetCount >= user.asset_slot && user.asset_slot !== -1)) {
+      if (!existingAsset && userAssetCount >= user.asset_slot) {
         return res.status(400).json({
           message: `Subscription Free hanya bisa memiliki ${user.asset_slot} jenis aset. Upgrade ke Pro untuk slot tidak terbatas.`,
         });
@@ -302,9 +229,11 @@ const sellMarket = async (req, res) => {
       !sellerPortfolio ||
       (sellerPortfolio.jumlah ?? 0) < amountToSellRequested
     ) {
-      return res.status(400).json({
-        message: "Jumlah koin di portofolio tidak mencukupi untuk dijual",
-      });
+      return res
+        .status(400)
+        .json({
+          message: "Jumlah koin di portofolio tidak mencukupi untuk dijual",
+        });
     }
 
     let remainingToSell = parseFloat(amountToSellRequested);
@@ -354,9 +283,11 @@ const sellMarket = async (req, res) => {
         const buyerBalance = parseFloat(buyer.saldo ?? 0); // parsing saldo ke float
 
         if (buyerBalance < earned) {
-          return res.status(400).json({
-            message: `Saldo user ${buyOrder.user_id} tidak cukup saat matching`,
-          });
+          return res
+            .status(400)
+            .json({
+              message: `Saldo user ${buyOrder.user_id} tidak cukup saat matching`,
+            });
         }
 
         buyer.saldo = buyerBalance - earned;
@@ -466,10 +397,12 @@ const sellLimit = async (req, res) => {
     });
 
     if (!portfolio || (portfolio.jumlah ?? 0) < finalAmount) {
-      return res.status(400).json({
-        message:
-          "Jumlah koin tidak tersedia di portofolio atau tidak mencukupi untuk menjual",
-      });
+      return res
+        .status(400)
+        .json({
+          message:
+            "Jumlah koin tidak tersedia di portofolio atau tidak mencukupi untuk menjual",
+        });
     }
 
     await Order.create({
@@ -493,8 +426,8 @@ const sellLimit = async (req, res) => {
 
 const getOrderHistory = async (req, res) => {
   try {
-    const user = req.user;
-    const id_user = user.id_user;
+    const { id_user } = req.user;
+
     const historyOrders = await Order.findAll({
       where: {
         user_id: id_user,
