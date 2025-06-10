@@ -170,12 +170,10 @@ const BuySubscription = async (req, res) => {
   const user = req.user;
   try {
     const cekUser = await User.findOne({
-      where: { id_user: user.id_user }, 
+      where: { id_user: user.id_user },
     });
     if (cekUser.subscription === "Pro") {
-      return res
-        .status(400)
-        .json({ message: "Kamu sudah berlangganan Pro!" });
+      return res.status(400).json({ message: "Kamu sudah berlangganan Pro!" });
     } else {
       if (cekUser.saldo < 99000) {
         return res
@@ -185,17 +183,15 @@ const BuySubscription = async (req, res) => {
         const updatedUser = await User.update(
           {
             subscription: "Pro",
-            asset_slot:-1,
+            asset_slot: -1,
             saldo: cekUser.saldo - 99000,
           },
           {
-            where: { id_user: user.id_user }, 
+            where: { id_user: user.id_user },
           }
         );
 
-        return res
-          .status(200)
-          .json({ message: "Berhasil berlangganan Pro" });
+        return res.status(200).json({ message: "Berhasil berlangganan Pro" });
       }
     }
   } catch (err) {

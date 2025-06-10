@@ -19,7 +19,9 @@ const fetchPorto = async (req, res) => {
 
     const tempporto = await Promise.all(
       porto.map(async (item) => {
-        const dbAsset = await asset.findOne({ where: { id_asset: item.id_asset } });
+        const dbAsset = await asset.findOne({
+          where: { id_asset: item.id_asset },
+        });
 
         if (!dbAsset || dbAsset.price === null) {
           return {
@@ -34,8 +36,12 @@ const fetchPorto = async (req, res) => {
         }
 
         const price = dbAsset.price;
-        const Pnl = parseFloat(((price - item.avg_price) * item.jumlah).toFixed(2));
-        const pnlPercent = parseFloat((((price - item.avg_price) / item.avg_price) * 100).toFixed(2));
+        const Pnl = parseFloat(
+          ((price - item.avg_price) * item.jumlah).toFixed(2)
+        );
+        const pnlPercent = parseFloat(
+          (((price - item.avg_price) / item.avg_price) * 100).toFixed(2)
+        );
 
         const valueInvested = item.avg_price * item.jumlah;
         totalValue += valueInvested;
@@ -53,7 +59,9 @@ const fetchPorto = async (req, res) => {
       })
     );
 
-    const Today_PnL_Percent = totalValue ? parseFloat((sumpnlPercentTotalValue / totalValue).toFixed(2)) : 0;
+    const Today_PnL_Percent = totalValue
+      ? parseFloat((sumpnlPercentTotalValue / totalValue).toFixed(2))
+      : 0;
 
     return res.status(200).json({
       porto: tempporto,
@@ -64,7 +72,6 @@ const fetchPorto = async (req, res) => {
     return res.status(500).json({ message: err.message });
   }
 };
-
 
 const detailPorto = async (req, res) => {
   try {
@@ -87,7 +94,9 @@ const detailPorto = async (req, res) => {
     });
 
     if (!assetData || assetData.price === null) {
-      return res.status(404).json({ message: "Current price not found in asset table" });
+      return res
+        .status(404)
+        .json({ message: "Current price not found in asset table" });
     }
 
     const price = assetData.price;
@@ -95,7 +104,9 @@ const detailPorto = async (req, res) => {
     const jumlah = portfolio.jumlah;
 
     const pnl = parseFloat(((price - avgPrice) * jumlah).toFixed(2));
-    const pnlPercent = parseFloat((((price - avgPrice) / avgPrice) * 100).toFixed(2));
+    const pnlPercent = parseFloat(
+      (((price - avgPrice) / avgPrice) * 100).toFixed(2)
+    );
 
     const result = {
       Asset: id,
@@ -116,43 +127,9 @@ const loss = async (req, res) => {
   try {
     const { nama, harga_sekarang, target_harga } = req.query;
 
-      if (!nama || !harga_sekarang || !target_harga) {
-        return res.status(400).json({
-          error: 'Parameter nama, harga_sekarang, dan target_harga wajib diisi.',
-        });
-      }
-
-      const currentPrice = parseFloat(harga_sekarang);
-      const targetPrice = parseFloat(target_harga);
-
-      if (isNaN(currentPrice) || isNaN(targetPrice)) {
-        return res.status(400).json({
-          error: 'harga_sekarang dan target_harga harus berupa angka.',
-        });
-      }
-
-      const loss = targetPrice - currentPrice;
-      const status = loss > 0 ? 'Rugi' : loss < 0 ? 'Untung' : 'Impasse';
-
-      res.json({
-        crypto: nama,
-        harga_sekarang: currentPrice,
-        target_harga: targetPrice,
-        loss: loss > 0 ? loss : 0,
-        status: status,
-      });
-  } catch (error) {
-    return res.status(500).json({ message: err.message });
-  }
-}
-
-const profits = async (req, res) => {
-  try {
-    const { nama, harga_sekarang, target_harga } = req.query;
-
     if (!nama || !harga_sekarang || !target_harga) {
       return res.status(400).json({
-        error: 'Parameter nama, harga_sekarang, dan target_harga wajib diisi.',
+        error: "Parameter nama, harga_sekarang, dan target_harga wajib diisi.",
       });
     }
 
@@ -161,12 +138,46 @@ const profits = async (req, res) => {
 
     if (isNaN(currentPrice) || isNaN(targetPrice)) {
       return res.status(400).json({
-        error: 'harga_sekarang dan target_harga harus berupa angka.',
+        error: "harga_sekarang dan target_harga harus berupa angka.",
+      });
+    }
+
+    const loss = targetPrice - currentPrice;
+    const status = loss > 0 ? "Rugi" : loss < 0 ? "Untung" : "Impasse";
+
+    res.json({
+      crypto: nama,
+      harga_sekarang: currentPrice,
+      target_harga: targetPrice,
+      loss: loss > 0 ? loss : 0,
+      status: status,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
+const profits = async (req, res) => {
+  try {
+    const { nama, harga_sekarang, target_harga } = req.query;
+
+    if (!nama || !harga_sekarang || !target_harga) {
+      return res.status(400).json({
+        error: "Parameter nama, harga_sekarang, dan target_harga wajib diisi.",
+      });
+    }
+
+    const currentPrice = parseFloat(harga_sekarang);
+    const targetPrice = parseFloat(target_harga);
+
+    if (isNaN(currentPrice) || isNaN(targetPrice)) {
+      return res.status(400).json({
+        error: "harga_sekarang dan target_harga harus berupa angka.",
       });
     }
 
     const profit = currentPrice - targetPrice;
-    const status = profit > 0 ? 'Untung' : profit < 0 ? 'Rugi' : 'Impasse';
+    const status = profit > 0 ? "Untung" : profit < 0 ? "Rugi" : "Impasse";
 
     res.json({
       crypto: nama,
@@ -178,6 +189,6 @@ const profits = async (req, res) => {
   } catch (error) {
     return res.status(500).json({ message: err.message });
   }
-}
+};
 
 module.exports = { fetchPorto, detailPorto, profits, loss };

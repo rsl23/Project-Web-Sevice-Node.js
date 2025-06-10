@@ -1,7 +1,7 @@
 "use strict";
 
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
+  async up(queryInterface, Sequelize) {
     const currentDate = new Date();
     // Buat beberapa tanggal yang berbeda untuk transaksi
     const date1 = new Date();
@@ -19,22 +19,18 @@ module.exports = {
         {
           id_user: 1,
           id_asset: "bitcoin",
-          type: "buy",
-          side: "buy",
-          price: 69840.5,
-          amount: 0.01,
-          total: 698.405,
-          status: "completed",
+          jumlah: 0.01,
+          harga: 698.405,
+          status: "Buy",
           createdAt: date1,
           updatedAt: date1,
-          
         },
       ],
       {}
     );
   },
 
-  down: async (queryInterface, Sequelize) => {
+  async down(queryInterface, Sequelize) {
     return queryInterface.bulkDelete("transaksi", null, {});
   },
 };
