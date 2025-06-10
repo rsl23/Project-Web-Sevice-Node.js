@@ -2,36 +2,38 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("asset", {
-      id: {
+    await queryInterface.createTable("transaksi", {
+      id_transaksi: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
+        allowNull: false,
+      },
+      id_user: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "user",
+          key: "id_user",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       id_asset: {
         type: Sequelize.STRING,
-        unique: true,
         allowNull: false,
       },
-      name: {
-        type: Sequelize.STRING,
+      jumlah: {
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
-      price: {
+      harga: {
         type: Sequelize.DOUBLE,
-        allowNull: true,
+        allowNull: false,
       },
-      image: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-      symbol: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-      is_deleted: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
+      status: {
+        type: Sequelize.ENUM("Buy", "Sell"),
+        allowNull: false,
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -44,6 +46,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("asset");
+    await queryInterface.dropTable("transaksi");
   },
 };

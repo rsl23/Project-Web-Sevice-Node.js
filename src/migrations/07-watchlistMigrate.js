@@ -2,12 +2,11 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("transaksi", {
-      id_transaksi: {
+    await queryInterface.createTable("watchlist", {
+      id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
-        allowNull: false,
       },
       id_user: {
         type: Sequelize.INTEGER,
@@ -23,18 +22,6 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      jumlah: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
-      harga: {
-        type: Sequelize.DOUBLE,
-        allowNull: false,
-      },
-      status: {
-        type: Sequelize.ENUM("Buy", "Sell"),
-        allowNull: false,
-      },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,
@@ -43,10 +30,14 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false,
       },
+      is_deleted: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
     });
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("transaksi");
+    await queryInterface.dropTable("watchlist");
   },
 };

@@ -4,7 +4,7 @@ const { registerSchema, loginSchema } = require("../middleware/userSchema");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const JWT_KEY = "ProyekWS";
-const Joi = require('joi');
+const Joi = require("joi");
 
 const register = async (req, res) => {
   try {
@@ -71,7 +71,7 @@ const login = async (req, res) => {
         const token = jwt.sign(
           {
             username: username,
-            id_user: findUser.id_user
+            id_user: findUser.id_user,
           },
           JWT_KEY,
           {
@@ -121,17 +121,17 @@ const requestPasswordReset = async (req, res) => {
 
     if (!user) {
       return res.status(404).json({
-        message: "Email tidak ditemukan"
+        message: "Email tidak ditemukan",
       });
     }
 
     const resetToken = jwt.sign({ email: user.email }, JWT_KEY, {
-      expiresIn: '1h'
+      expiresIn: "1h",
     });
 
     return res.status(200).json({
       message: "Token reset password berhasil dibuat.",
-      resetToken: resetToken
+      resetToken: resetToken,
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -146,13 +146,16 @@ const updatePassword = async (req, res) => {
         .min(8)
         .max(30)
         .required()
-        .pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^a-zA-Z0-9]).{8,}$'))
+        .pattern(
+          new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^a-zA-Z0-9]).{8,}$")
+        )
         .messages({
           "any.required": "Password tidak boleh kosong",
           "string.empty": "Password tidak boleh kosong",
           "string.min": "Password minimal 8 karakter",
           "string.max": "Password maksimal 30 karakter",
-          "string.pattern.base": "Password harus mengandung huruf besar, huruf kecil, angka, dan karakter khusus",
+          "string.pattern.base":
+            "Password harus mengandung huruf besar, huruf kecil, angka, dan karakter khusus",
         }),
     });
 
@@ -170,7 +173,7 @@ const updatePassword = async (req, res) => {
 
     if (!user) {
       return res.status(404).json({
-        message: "Pengguna tidak ditemukan"
+        message: "Pengguna tidak ditemukan",
       });
     }
 
@@ -180,11 +183,17 @@ const updatePassword = async (req, res) => {
     await user.save();
 
     return res.status(200).json({
-      message: "Password berhasil diperbarui"
+      message: "Password berhasil diperbarui",
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
 
-module.exports = { register, login, profile, requestPasswordReset, updatePassword };
+module.exports = {
+  register,
+  login,
+  profile,
+  requestPasswordReset,
+  updatePassword,
+};
