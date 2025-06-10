@@ -135,14 +135,13 @@ const getAssets = async (req, res) => {
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const syncAssets = async (req, res) => {
-<<<<<<< HEAD
   try {
     const perPage = 50;
     let page = 1;
     let hasMore = true;
     let totalSynced = 0;
-
-    while (hasMore) {
+    let actualLimit = 10;
+    while (hasMore && totalSynced < actualLimit) {
       const marketRes = await axios.get(
         "https://api.coingecko.com/api/v3/coins/markets",
         {
@@ -155,24 +154,6 @@ const syncAssets = async (req, res) => {
           },
         }
       );
-=======
-    try {
-        const perPage = 50;
-        let page = 1;
-        let hasMore = true;
-        let totalSynced = 0;
-        let actualLimit = 10;
-        while (hasMore && totalSynced < actualLimit) {
-            const marketRes = await axios.get("https://api.coingecko.com/api/v3/coins/markets", {
-                params: {
-                    vs_currency: "usd",
-                    order: "market_cap_desc",
-                    per_page: perPage,
-                    page,
-                    sparkline: false,
-                },
-            });
->>>>>>> a121c621f2d8fe55cb0429fd6fcc5bc303c4c44f
 
       const assets = marketRes.data;
       if (!assets.length) break;
@@ -180,46 +161,14 @@ const syncAssets = async (req, res) => {
       for (const assetData of assets) {
         const { id, name, symbol, current_price } = assetData;
 
-<<<<<<< HEAD
         // Ambil deskripsi dari endpoint detail
-        let description = null;
-        try {
-          const detailRes = await axios.get(
-            `https://api.coingecko.com/api/v3/coins/${id}?localization=false`
-          );
-          description = detailRes.data?.description?.en || null;
-        } catch (err) {
-          console.warn(`Gagal ambil deskripsi untuk ${id}:`, err.message);
-=======
-                // Ambil deskripsi dari endpoint detail
-                // let description = null;
-                // try {
-                //     const detailRes = await axios.get(`https://api.coingecko.com/api/v3/coins/${id}?localization=false`);;
-                //     description = detailRes.data?.description?.en || null;
-                // } catch (err) {
-                //     console.warn(`Gagal ambil deskripsi untuk ${id}:`, err.message);
-                // }
-
-                // Upsert ke DB
-                await asset.upsert({
-                    id_asset: id,
-                    name,
-                    symbol,
-                    price: current_price,
-                    is_deleted: false,
-                });
-
-                // Optional: delay ringan antar detail call biar aman
-                await delay(5000); // 0.3 detik
-            }
-
-            totalSynced += assets.length;
-            page += 1;
-
-            // Hindari rate limit
-            await delay(2000); // 2 detik antar halaman
->>>>>>> a121c621f2d8fe55cb0429fd6fcc5bc303c4c44f
-        }
+        // let description = null;
+        // try {
+        //     const detailRes = await axios.get(`https://api.coingecko.com/api/v3/coins/${id}?localization=false`);;
+        //     description = detailRes.data?.description?.en || null;
+        // } catch (err) {
+        //     console.warn(`Gagal ambil deskripsi untuk ${id}:`, err.message);
+        // }
 
         // Upsert ke DB
         await asset.upsert({
@@ -240,6 +189,24 @@ const syncAssets = async (req, res) => {
       // Hindari rate limit
       await delay(2000); // 2 detik antar halaman
     }
+
+    // Upsert ke DB
+    await asset.upsert({
+      id_asset: id,
+      name,
+      symbol,
+      price: current_price,
+      is_deleted: false,
+    });
+
+    // Optional: delay ringan antar detail call biar aman
+    await delay(5000); // 0.3 detik
+
+    totalSynced += assets.length;
+    page += 1;
+
+    // Hindari rate limit
+    await delay(2000); // 2 detik antar halaman
 
     return res
       .status(200)
