@@ -41,8 +41,8 @@ const addToWatchlist = async (req, res) => {
 
 const getWatchlist = async (req, res) => {
     try {
-        const { id_user } = req.user;
-
+        const user = req.user;
+        const id_user = user.id_user;
         // Ambil daftar watchlist user (hanya id_asset)
         const watchlistAssets = await watchlist.findAll({
             where: { id_user, is_deleted: false },
@@ -53,12 +53,12 @@ const getWatchlist = async (req, res) => {
             return res.json({ watchlist: [] });
         }
 
-        // Ambil data asset yang ada di watchlist
+        // Membuat array id_asset dari watchlist
         const assetIds = watchlistAssets.map(w => w.id_asset);
 
         const assets = await asset.findAll({
             where: { id_asset: assetIds },
-            attributes: ['id_asset', 'name', 'price', 'description', 'symbol']
+            attributes: ['id_asset', 'name', 'price', 'symbol']
         });
 
         // Ambil portofolio user untuk asset-asset tersebut
@@ -100,9 +100,9 @@ const getWatchlist = async (req, res) => {
 
 const softDeleteWatchlist = async (req, res) => {
     try {
-        const { id_user } = req.user; // dari token auth
+        const user = req.user; // dari token auth
         const { id_asset } = req.body;
-
+        const id_user = user.id_user; // Ambil id_user dari token auth
         if (!id_asset) {
             return res.status(400).json({ message: "id_asset wajib diisi" });
         }

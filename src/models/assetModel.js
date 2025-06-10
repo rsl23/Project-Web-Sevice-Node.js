@@ -10,7 +10,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       name: DataTypes.STRING,
       price: DataTypes.DOUBLE,
-      description: DataTypes.TEXT,
       symbol: DataTypes.STRING,
       createdAt: {
         type: DataTypes.DATE,

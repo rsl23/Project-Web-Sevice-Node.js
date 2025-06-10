@@ -26,7 +26,7 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage: storage,
   limits: { fileSize: 5 * 1024 * 1024 },
-}).single("gambar");
+}).single("buktiTF");
 
 const topup = (req, res) => {
   upload(req, res, async (err) => {
@@ -130,7 +130,7 @@ const convertAll = async (req, res) => {
   }
 
   const coinIds = coins.map((c) => c.id).join(",");
-
+  // bitcoin, ethereum
   try {
     const response = await axios.get(
       "https://api.coingecko.com/api/v3/simple/price",
