@@ -142,20 +142,23 @@ const loss = async (req, res) => {
       });
     }
 
-    const loss = currentPrice - targetPrice;
-    const status = loss > 0 ? "Rugi" : loss < 0 ? "Untung" : "Impasse";
+    const lossValue = currentPrice - targetPrice;
+    const percentage = ((lossValue / currentPrice) * 100).toFixed(2); // dua desimal
+    const status = lossValue > 0 ? "Rugi" : lossValue < 0 ? "Untung" : "Impasse";
 
     res.json({
       crypto: nama,
       harga_sekarang: currentPrice,
       target_harga: targetPrice,
-      loss: loss > 0 ? loss : 0,
+      loss: lossValue > 0 ? lossValue : 0,
+      persentase: lossValue !== 0 ? `${Math.abs(percentage)}%` : "0%",
       status: status,
     });
   } catch (error) {
-    return res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: error.message });
   }
 };
+
 
 const profits = async (req, res) => {
   try {
@@ -177,6 +180,7 @@ const profits = async (req, res) => {
     }
 
     const profit = targetPrice - currentPrice;
+    const percentage = ((profit / currentPrice) * 100).toFixed(2); // dua angka desimal
     const status = profit > 0 ? "Untung" : profit < 0 ? "Rugi" : "Impasse";
 
     res.json({
@@ -184,11 +188,13 @@ const profits = async (req, res) => {
       harga_sekarang: currentPrice,
       target_harga: targetPrice,
       selisih: profit,
+      persentase: `${percentage}%`,
       status: status,
     });
   } catch (error) {
-    return res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: error.message });
   }
 };
+
 
 module.exports = { fetchPorto, detailPorto, profits, loss };
