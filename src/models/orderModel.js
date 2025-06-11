@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.ENUM('open', 'partial', 'filled', 'cancelled'),
             defaultValue: 'open',
         },
-        created_at: {
+        createdAt: {
             type: DataTypes.DATE,
             defaultValue: DataTypes.NOW,
         },
