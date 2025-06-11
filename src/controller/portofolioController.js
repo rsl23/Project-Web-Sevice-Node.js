@@ -142,7 +142,7 @@ const loss = async (req, res) => {
       });
     }
 
-    const loss = targetPrice - currentPrice;
+    const loss = currentPrice - targetPrice;
     const status = loss > 0 ? "Rugi" : loss < 0 ? "Untung" : "Impasse";
 
     res.json({
@@ -176,7 +176,7 @@ const profits = async (req, res) => {
       });
     }
 
-    const profit = currentPrice - targetPrice;
+    const profit = targetPrice - currentPrice;
     const status = profit > 0 ? "Untung" : profit < 0 ? "Rugi" : "Impasse";
 
     res.json({
